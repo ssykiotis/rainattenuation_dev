@@ -1,4 +1,6 @@
 // using namespace ns3;
+#include <vector>
+
 namespace rainprop{
 
 class Control{
@@ -19,21 +21,22 @@ public:
     int GetFSMCStates();
     int GetFSMCGran();
 
-    void print();
+    std::vector<int> monthdays;
+    std::vector<int> monthhours;
 
 private:
 
-    void SetMonthdays(double monthdays[]);
-    void SetMonthhours(double monthdays[],double monthhours[]);
+    void SetMonthdays();
+    void SetMonthhours();
 
     double locLat;                                   
-    double locLon;                               
-    double monthdays[];
-    double monthhours[];          
+    double locLon;                                        
     double f;                                    
     double dist;                                    
     int FSMC_gran;
     double FSMC_states;
+    
+    
 
 };
 }

@@ -1,5 +1,5 @@
 #include "control.h"
-#include <iostream>
+#include <vector>
 
 namespace rainprop{
 
@@ -10,31 +10,40 @@ namespace rainprop{
         dist = 0;
         FSMC_states = 0;
         FSMC_gran = 1;
-        SetMonthdays(monthdays);
-        SetMonthhours(monthdays,monthhours);    
+        SetMonthdays();
+        SetMonthhours();
+       
     };
 
-    void Control::SetMonthdays(double monthdays[]){
-        monthdays[0] = 31;
-        monthdays[1] = 28;
-        monthdays[2] = 31;
-        monthdays[3] = 30;
-        monthdays[4] = 31;
-        monthdays[5] = 30;
-        monthdays[6] = 31;
-        monthdays[7] = 31;
-        monthdays[8] = 30;
-        monthdays[9] = 31;
-        monthdays[10] = 30;
-        monthdays[11] = 31;
+    void Control::SetMonthdays(){
+        monthdays.push_back(31);
+        monthdays.push_back(28);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
     };
 
-    void Control::SetMonthhours(double monthdays[12],double monthhours[]){
+    void Control::SetMonthhours(){
 
-        for (int i = 0; i < 12; i++)
-        {
-            monthhours[i] = 24*monthdays[i];
-        }
+        monthhours.push_back(744);
+        monthhours.push_back(672);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
     };
 
     void Control::SetLocation(double lon, double lat){
@@ -79,8 +88,5 @@ namespace rainprop{
         return this->FSMC_gran;
     };
 
-    void Control::print(){
-        std::cout << "Hello World";
-    };
 
 }
