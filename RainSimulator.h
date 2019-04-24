@@ -15,10 +15,9 @@ class RainSimulator{
 
 public:
 
-    RainSimulator();
+    RainSimulator(double lon,double lat);
 
     char GetClimaticRegion();
-
     char DecideClimaticRegion();
     std::vector<Koppen> ReadKoppen();
     Cords SetLocation(Cords loc);

@@ -5,9 +5,10 @@
 int main(){
 
 rainprop::Control controlSettings;
-rainprop::RainSimulator rainSimulator;
 
-controlSettings.SetLocation(52.0,13.0);
+rainprop::RainSimulator rainSimulator(52.52,13.4049);
+
+// controlSettings.SetLocation();
 rainSimulator.SetLocation(controlSettings.GetLocation());
 
 std::cout <<rainSimulator.GetClimaticRegion() << std::endl;
