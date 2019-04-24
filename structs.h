@@ -1,0 +1,23 @@
+#ifndef CONTROL_H
+#define CONTROL_H
+
+#include <stdlib.h>
+#include <string>
+
+
+namespace rainprop{
+
+    struct Cords{
+        double lat;
+        double lon;
+    };  
+
+    struct Koppen{
+        double lat;
+        double lon;
+        std::string region;
+    };
+
+}
+
+#endif

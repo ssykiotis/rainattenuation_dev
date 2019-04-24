@@ -1,7 +1,15 @@
+#ifndef CONTROL_H
+#define CONTROL
+
+
 // using namespace ns3;
 #include <vector>
+#include "structs.h"
+
 
 namespace rainprop{
+
+
 
 class Control{
     
@@ -14,8 +22,8 @@ public:
     void SetDistance(double dist);
     void SetFSMCSettings(int granularity,int states);
 
-    double GetLocationLon();
-    double GetLocationLat();
+
+    Cords GetLocation();
     double GetFrequency();
     double GetDistance();
     int GetFSMCStates();
@@ -29,8 +37,7 @@ private:
     void SetMonthdays();
     void SetMonthhours();
 
-    double locLat;                                   
-    double locLon;                                        
+    Cords loc;                                        
     double f;                                    
     double dist;                                    
     int FSMC_gran;
@@ -40,3 +47,5 @@ private:
 
 };
 }
+
+#endif

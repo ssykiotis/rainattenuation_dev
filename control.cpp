@@ -4,8 +4,7 @@
 namespace rainprop{
 
     Control::Control(){
-        locLat = 0;
-        locLon = 0;
+        loc = {0,0};
         f = 0;
         dist = 0;
         FSMC_states = 0;
@@ -46,9 +45,9 @@ namespace rainprop{
         monthhours.push_back(744);
     };
 
-    void Control::SetLocation(double lon, double lat){
-        this->locLon = lon;
-        this->locLat = lat;
+    void Control::SetLocation(double lat, double lon){
+       Cords loc = {lat,lon};
+       this-> loc = loc;
     };
 
     void Control::SetFrequency(double freq){
@@ -64,12 +63,8 @@ namespace rainprop{
         this->FSMC_states = states;
     };
 
-    double Control::GetLocationLon(){
-        return this->locLon;
-    };
-
-    double Control::GetLocationLat(){
-         return this->locLat;
+    Cords Control::GetLocation(){
+        return this->loc;
     };
 
     double Control::GetFrequency(){
