@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <vector>
 
 
 namespace rainprop{
@@ -18,6 +19,12 @@ namespace rainprop{
         std::string region;
     };
 
+    struct ITUR837_values{
+        std::vector<double> Temperature;
+        std::vector<double> MonthlyTotal;
+        std::vector<double> P_rain;
+        std::vector<double> r; 
+    };
 }
 
 #endif
