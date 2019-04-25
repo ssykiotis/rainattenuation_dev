@@ -9,13 +9,11 @@
 
 namespace rainprop{
 
-
-
 class Control{
     
 public:
-
     Control();
+    Control(double lat,double lon);
 
     void SetLocation(double lon, double lat);
     void SetFrequency(double freq);
@@ -41,9 +39,7 @@ private:
     double f;                                    
     double dist;                                    
     int FSMC_gran;
-    double FSMC_states;
-    
-    
+    double FSMC_states;   
 
 };
 }

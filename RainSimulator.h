@@ -6,6 +6,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <vector>
+#include "control.h"
 #include "structs.h"
 
 namespace rainprop{
@@ -15,12 +16,16 @@ class RainSimulator{
 
 public:
 
-    RainSimulator(double lon,double lat);
+    RainSimulator(Control controlSettings);
 
     std::vector<Koppen> ReadKoppen();
     std::vector<double> ReadCoordinates(const char* filename);
+
+    //Helper functions for internal use
     int FindMinIndex(std::vector<double> map);
-    void ReadCsvValue(std::string target, const char* filename,int latMinIndex,int lonMinIndex);
+    std::vector<Cords> ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latMinIndex,int lonMinIndex);
+    double BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap);
+    double ReadCsvValue(const char* filename,int i,int latMinIndex,int lonMinIndex);
 
     char GetClimaticRegion();
     char DecideClimaticRegion();
@@ -33,6 +38,7 @@ private:
     char cl_region;
     Cords loc;
     ITUR837_values itu_v;
+    Control control;
 };
 
 }

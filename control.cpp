@@ -4,7 +4,19 @@
 namespace rainprop{
 
     Control::Control(){
-        loc = {0,0};
+        loc.lat = 0;
+        loc.lon = 0;
+        f = 0;
+        dist = 0;
+        FSMC_states = 0;
+        FSMC_gran = 1;
+        SetMonthdays();
+        SetMonthhours();
+    };
+
+    Control::Control(double lat,double lon){
+        this->loc.lat = lat;
+        this->loc.lon = lon;
         f = 0;
         dist = 0;
         FSMC_states = 0;
