@@ -338,11 +338,13 @@ ITUR837_values RainSimulator::ITUR837_calculation(){
         else{
             itu_v.r.push_back(0.5874);
         }
-        
-
+        itu_v.P_rain.push_back(itu_v.MonthlyTotal[i]/(24*control.monthdays[i]*itu_v.r[i]));
+        if(itu_v.P_rain[i]>0.7){
+            itu_v.P_rain[i] = 0.7;
+            itu_v.r[i] = 100*itu_v.MonthlyTotal[i]/(70*24);
+        }
     }
     
-
 };
 
 } // namespace rainprop
