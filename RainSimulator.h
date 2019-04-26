@@ -41,7 +41,7 @@ private:
     double ReadCsvValue(const char* filename,int i,int latMinIndex,int lonMinIndex);
 
     std::vector<Matrix> ReadRainValues(const char* filename);
-    // std::vector<Matrix> ConvertRainValues();
+    std::vector<Matrix> ConvertRainValues(std::vector<Matrix> R_60);
 
     Cords loc;
     char cl_region;

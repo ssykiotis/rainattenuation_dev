@@ -368,7 +368,7 @@ void RainSimulator::RainValues(){
     }
 
     std::vector<Matrix> R_60 = ReadRainValues(filename);
-    // std::vector<Matrix> R_01 = ConvertRainValues();
+    std::vector<Matrix> R_01 = ConvertRainValues(R_60);
     this->R_01 = R_01;
 };
 
@@ -405,8 +405,18 @@ std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
     
 };
 
-// RainSimulator::ConvertRainValues(){
-// 
-// };
+std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
+    double a = 0.509;
+    double b= 1.394;
+    std::vector<Matrix> R_01 = R_60;
+    for (int k = 0; k < R_01.size(); k++){
+        for (int i = 0; i < R_01[k].v.size(); i++){
+            for (int j=0; j<R_01[k].v[i].size() ; j++){
+                R_01[k].v[i][j] = pow(a*R_01[k].v[i][j],b);
+            }    
+        }   
+    }
+    return R_01;
+};
 
 }
