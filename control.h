@@ -1,10 +1,12 @@
 #ifndef CONTROL_H
 #define CONTROL
 
+#include <vector>
+
+#include "structs.h"
 
 // using namespace ns3;
-#include <vector>
-#include "structs.h"
+
 
 
 namespace rainprop{
@@ -29,11 +31,13 @@ public:
 
     std::vector<int> monthdays;
     std::vector<int> monthhours;
+    std::vector<int> monthhours_cumsum;
 
 private:
 
     void SetMonthdays();
     void SetMonthhours();
+    void ComputeMonthhoursCumSum();
 
     Cords loc;                                        
     double f;                                    

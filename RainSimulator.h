@@ -4,8 +4,9 @@
 
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
 #include <vector>
+
+#include <stdlib.h>
 #include "control.h"
 #include "structs.h"
 
@@ -21,24 +22,32 @@ public:
     std::vector<Koppen> ReadKoppen();
     std::vector<double> ReadCoordinates(const char* filename);
 
+    char GetClimaticRegion();
+    char DecideClimaticRegion();
+
+    Cords GetLocation();
+    Cords SetLocation(Cords loc);
+    ITUR837_values ITUR837_calculation();
+
+    void RainValues();
+    
+
+private:
+
     //Helper functions for internal use
     int FindMinIndex(std::vector<double> map);
     std::vector<Cords> ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latMinIndex,int lonMinIndex);
     double BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap);
     double ReadCsvValue(const char* filename,int i,int latMinIndex,int lonMinIndex);
 
-    char GetClimaticRegion();
-    char DecideClimaticRegion();
-    
-    Cords SetLocation(Cords loc);
-    Cords GetLocation();
-    ITUR837_values ITUR837_calculation();
+    std::vector<Matrix> ReadRainValues(const char* filename);
+    // std::vector<Matrix> ConvertRainValues();
 
-private:
-    char cl_region;
     Cords loc;
+    char cl_region;
     ITUR837_values itu_v;
     Control control;
+    std::vector<Matrix> R_01;
 };
 
 }

@@ -1,6 +1,7 @@
+#include <iostream>
+
 #include "control.h"
 #include "RainSimulator.h"
-#include <iostream>
 
 int main(){
 
@@ -13,6 +14,7 @@ std::cout << rainSimulator.GetLocation().lat <<std::endl;
 std::cout << rainSimulator.GetLocation().lon <<std::endl;
 
 rainSimulator.ITUR837_calculation();
+rainSimulator.RainValues();
 
 return 0;
 }

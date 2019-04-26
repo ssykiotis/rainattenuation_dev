@@ -31,6 +31,10 @@ namespace rainprop{
         int j;
         int length;
     };
+
+    struct Matrix {
+        std::vector< std::vector<double> > v;
+    };
 }
 
 #endif

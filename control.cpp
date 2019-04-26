@@ -23,7 +23,7 @@ namespace rainprop{
         FSMC_gran = 1;
         SetMonthdays();
         SetMonthhours();
-       
+        ComputeMonthhoursCumSum();
     };
 
     void Control::SetMonthdays(){
@@ -95,5 +95,16 @@ namespace rainprop{
         return this->FSMC_gran;
     };
 
+    void Control::ComputeMonthhoursCumSum(){
+        std::vector<int> v_cum;
+        v_cum.push_back(0);
+
+        for (int i = 1; i < monthhours.size()+1; i++)
+        {
+          v_cum.push_back( v_cum[i-1] + monthhours [i-1] );
+        }
+
+        this->monthhours_cumsum = v_cum;
+    };
 
 }

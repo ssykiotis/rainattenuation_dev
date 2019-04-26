@@ -6,8 +6,7 @@
 #include <cstring>
 #include "math.h"
 
-namespace rainprop
-{
+namespace rainprop{
 
 RainSimulator::RainSimulator(Control controlSettings){
     this->loc.lat = controlSettings.GetLocation().lat;
@@ -241,8 +240,6 @@ double RainSimulator::BilinearInterpolation(std::vector<double> T, std::vector<C
     return I_rc; 
 };
 
-
-
 double RainSimulator::ReadCsvValue(const char* filename,int i, int latMinIndex, int lonMinIndex){
         
         char buffer[100];
@@ -347,4 +344,69 @@ ITUR837_values RainSimulator::ITUR837_calculation(){
     
 };
 
-} // namespace rainprop
+void RainSimulator::RainValues(){
+
+    const char* filename;
+    switch (cl_region)
+    {
+    case 'A':
+        filename = "rain_data/equatorial.csv";
+        break;    
+    case 'B':
+        filename = "rain_data/arid.csv";
+        break;
+    case 'C':
+        filename = "rain_data/temperate.csv";
+        break;    
+    case 'D':
+        filename = "rain_data/snow.csv";
+        break;
+    case 'E':
+        break;
+    default:
+        break;
+    }
+
+    std::vector<Matrix> R_60 = ReadRainValues(filename);
+    // std::vector<Matrix> R_01 = ConvertRainValues();
+    this->R_01 = R_01;
+};
+
+
+std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
+    std::vector<Matrix> R_year;
+    Matrix R_temp;
+    std::vector <std::vector<double> > R_month;
+    std::string val;
+    std::vector<double> readvalues_line;
+    std::vector<int> monthhours_cumsum = this->control.monthhours_cumsum;
+    std::ifstream ip(filename);
+
+
+    for (int i = 0; i < (monthhours_cumsum.size()-1); i++){         //loop for months
+    
+        for (int j = monthhours_cumsum[i]; j< monthhours_cumsum[i+1]; j++){       //loop for lines of month
+              
+            for (int k = 0; k < 10; k++){                //read one line
+                getline(ip,val,',');
+                readvalues_line.push_back(atof(val.c_str()));
+            }
+            getline(ip,val,'\n');
+            readvalues_line.push_back(atof(val.c_str()));
+            R_month.push_back(readvalues_line);
+            readvalues_line.clear();
+        }
+        R_temp.v = R_month;
+        R_year.push_back(R_temp);
+        R_month.clear();
+        
+    }
+    return R_year;
+    
+};
+
+// RainSimulator::ConvertRainValues(){
+// 
+// };
+
+}
