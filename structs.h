@@ -25,6 +25,12 @@ namespace rainprop{
         std::vector<double> P_rain;
         std::vector<double> r; 
     };
+
+    struct RainEvents{
+        int i;
+        int j;
+        int length;
+    };
 }
 
 #endif
