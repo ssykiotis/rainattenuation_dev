@@ -30,7 +30,7 @@ public:
     ITUR837_values ITUR837_calculation();
 
     void RainValues();
-    
+    void SplitInRainEvents();
 
 private:
 
@@ -48,6 +48,7 @@ private:
     ITUR837_values itu_v;
     Control control;
     std::vector<Matrix> R_01;
+    std::vector< std::vector<RainEvent> > RainEvents;
 };
 
 }

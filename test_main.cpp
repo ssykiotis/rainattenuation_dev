@@ -15,6 +15,7 @@ std::cout << rainSimulator.GetLocation().lon <<std::endl;
 
 rainSimulator.ITUR837_calculation();
 rainSimulator.RainValues();
+rainSimulator.SplitInRainEvents();
 
 return 0;
 }

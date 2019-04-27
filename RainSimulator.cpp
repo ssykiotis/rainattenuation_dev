@@ -15,13 +15,11 @@ RainSimulator::RainSimulator(Control controlSettings){
     cl_region = DecideClimaticRegion();
 };
 
-Cords RainSimulator::SetLocation(Cords loc)
-{
+Cords RainSimulator::SetLocation(Cords loc){
     this->loc = loc;
 };
 
-Cords RainSimulator::GetLocation()
-{
+Cords RainSimulator::GetLocation(){
     return this->loc;
 };
 
@@ -108,8 +106,7 @@ std::vector<Koppen> RainSimulator::ReadKoppen()
     return v;
 };
 
-std::vector<double> RainSimulator::ReadCoordinates(const char *filename)
-{
+std::vector<double> RainSimulator::ReadCoordinates(const char *filename){
     std::vector<double> v;
     std::ifstream ip(filename);
     std::string readval;
@@ -123,8 +120,7 @@ std::vector<double> RainSimulator::ReadCoordinates(const char *filename)
     return v;
 };
 
-int RainSimulator::FindMinIndex(std::vector<double> map)
-{
+int RainSimulator::FindMinIndex(std::vector<double> map){
     int minIndex = 0;
     double min = map[0];
 
@@ -347,8 +343,7 @@ ITUR837_values RainSimulator::ITUR837_calculation(){
 void RainSimulator::RainValues(){
 
     const char* filename;
-    switch (cl_region)
-    {
+    switch (cl_region){
     case 'A':
         filename = "rain_data/equatorial.csv";
         break;    
@@ -418,5 +413,54 @@ std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
     }
     return R_01;
 };
+
+
+void RainSimulator::SplitInRainEvents(){
+
+    int j;
+    int months = R_01.size();
+    int hours;
+    int length;
+    RainEvent event;
+    std::vector<std::vector<double> > R_01_month;
+
+    std::vector<RainEvent> RainEvents_month;
+    std::vector<std::vector<RainEvent> > RainEvents_year;
+
+    for (int i = 0; i < months; i++){
+        hours = control.monthhours[i];
+        R_01_month = R_01[i].v;
+        for (int k = 0; k < R_01_month[0].size(); k++){
+            j=0;
+            while(j<hours){
+                if(R_01_month[j][k]!=0){
+                    length =1;
+                    if(j+length<hours){
+                        while(R_01_month[j+length][k]!=0){
+                            length++;
+                            if((j+length)>hours-1){
+                                length--;
+                                break;
+                            }
+                        }  
+                    }
+                    
+                    event = {j,k,length};
+                    j=j+length;
+                    RainEvents_month.push_back(event);
+                }
+                else{
+                    j++;
+                }
+            }
+        }
+        RainEvents_year.push_back(RainEvents_month);
+        RainEvents_month.clear();
+    }
+
+    this->RainEvents = RainEvents_year;
+
+};
+
 
 }
