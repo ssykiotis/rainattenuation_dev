@@ -5,6 +5,8 @@
 #include <vector>
 #include <cstring>
 #include "math.h"
+#include <random>
+ 
 
 namespace rainprop{
 
@@ -414,7 +416,6 @@ std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
     return R_01;
 };
 
-
 void RainSimulator::SplitInRainEvents(){
 
     int j;
@@ -444,7 +445,6 @@ void RainSimulator::SplitInRainEvents(){
                             }
                         }  
                     }
-                    
                     event = {j,k,length};
                     j=j+length;
                     RainEvents_month.push_back(event);
@@ -457,9 +457,60 @@ void RainSimulator::SplitInRainEvents(){
         RainEvents_year.push_back(RainEvents_month);
         RainEvents_month.clear();
     }
-
     this->RainEvents = RainEvents_year;
+};
 
+void RainSimulator::SimulateRainYear(){
+
+    std::vector<Matrix> SimulatedValues(12);
+    int months = SimulatedValues.size();
+    int hours;
+    double P_rain_month;
+    double val;
+    int j;
+    std::vector<std::vector<double> > values;
+    RainEvent event; 
+    int event_index;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::discrete_distribution<> d;
+
+    for (int i = 0; i < months; i++){   
+        j=0;
+        hours = control.monthhours[i];
+        values.resize(hours);
+        P_rain_month = itu_v.P_rain[i]*100;
+        d = {100-P_rain_month,P_rain_month};
+        while(j<hours){
+            val = d(gen);
+            if(val!=0){
+                event_index = std::rand()%RainEvents[i].size();
+                event = RainEvents[i][event_index];
+                if(event.length+j>hours){
+                    event.length = j-hours;
+                }
+                while(event.length>0){
+                    values[j].push_back(R_01[i].v[event.i][event.j]);
+                    event.length--;
+                    event.i++;
+                    j++;
+                }
+                
+            }
+            else{
+                values[j].push_back(0);
+                j++;
+            }
+        }
+        SimulatedValues[i].v=values;
+        values.clear();
+    }
+
+    
+    
+
+    
 };
 
 

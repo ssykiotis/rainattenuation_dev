@@ -10,6 +10,7 @@
 #include "control.h"
 #include "structs.h"
 
+
 namespace rainprop{
 
 
@@ -31,6 +32,7 @@ public:
 
     void RainValues();
     void SplitInRainEvents();
+    void SimulateRainYear();
 
 private:
 
@@ -42,13 +44,16 @@ private:
 
     std::vector<Matrix> ReadRainValues(const char* filename);
     std::vector<Matrix> ConvertRainValues(std::vector<Matrix> R_60);
-
+    //
+    
     Cords loc;
     char cl_region;
     ITUR837_values itu_v;
     Control control;
     std::vector<Matrix> R_01;
     std::vector< std::vector<RainEvent> > RainEvents;
+    std::vector<Matrix> R_01_simulated;
+
 };
 
 }
