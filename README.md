@@ -7,4 +7,4 @@ Classes:
   2) RainSimulator: class that contains simulated rain rate values and the corresponding rain attenuation for a year.
   
   
-  Progress: 9/23  functions implemented : ~39% done
+  Progress: 10/23  functions implemented : ~44% done
