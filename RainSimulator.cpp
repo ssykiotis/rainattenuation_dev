@@ -507,10 +507,35 @@ void RainSimulator::SimulateRainYear(){
         values.clear();
     }
 
-    
-    
+    double mu;
+    double sigma;
+    std::default_random_engine generator;
+    std::normal_distribution<double> distribution;
+    double nvalue;
 
-    
+
+
+    for (int i = 0; i < SimulatedValues.size(); i++){
+        for (int j = 0; j < SimulatedValues[i].v.size(); j++){
+            if (SimulatedValues[i].v[j][0]!=0){
+                mu = SimulatedValues[i].v[j][0];
+                sigma = mu/3;
+                distribution= std::normal_distribution<double>(mu,sigma);
+                for (int l = 0; l < 59; l++) {
+                    nvalue = distribution(generator);
+                    while (nvalue<=0){
+                        nvalue = distribution(generator);
+                    }
+                    SimulatedValues[i].v[j].push_back(nvalue);
+                }  
+            }
+            else{
+                for (int l = 0; l < 59; l++) {
+                   SimulatedValues[i].v[j].push_back(0);
+                }  
+            }  
+        }   
+    }   
 };
 
 
