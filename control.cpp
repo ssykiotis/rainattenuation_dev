@@ -9,7 +9,6 @@ namespace rainprop{
         f = 0;
         dist = 0;
         FSMC_states = 0;
-        FSMC_gran = 1;
         SetMonthdays();
         SetMonthhours();
     };
@@ -20,7 +19,6 @@ namespace rainprop{
         f = 0;
         dist = 0;
         FSMC_states = 0;
-        FSMC_gran = 1;
         SetMonthdays();
         SetMonthhours();
         ComputeMonthhoursCumSum();
@@ -70,8 +68,7 @@ namespace rainprop{
         this->dist = dist;
     };
 
-    void Control::SetFSMCSettings(int granularity,int states){
-        this->FSMC_gran = granularity;
+    void Control::SetFSMCSettings(int states){
         this->FSMC_states = states;
     };
 
@@ -91,9 +88,6 @@ namespace rainprop{
         return this->FSMC_states;
     };
 
-    int Control::GetFSMCGran(){
-        return this->FSMC_gran;
-    };
 
     void Control::ComputeMonthhoursCumSum(){
         std::vector<int> v_cum;
