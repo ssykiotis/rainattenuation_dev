@@ -40,7 +40,10 @@
         "sstream": "cpp",
         "tuple": "cpp",
         "utility": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
