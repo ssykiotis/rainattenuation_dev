@@ -32,6 +32,18 @@ namespace rainprop{
         int length;
     };
 
+    struct SpecRainAttCoeff{
+        double k_h;
+        double k_v;
+        double a_h;
+        double a_v;
+    };
+
+    struct RainAttCoeff{
+        double k;
+        double a;
+    };
+
     struct Matrix {
         std::vector< std::vector<double> > v;
     };

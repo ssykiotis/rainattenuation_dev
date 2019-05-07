@@ -2,6 +2,7 @@
 
 #include "control.h"
 #include "RainSimulator.h"
+#include "RainPropagation.h"
 
 int main(){
 
@@ -17,6 +18,8 @@ rainSimulator.ITUR837_calculation();
 rainSimulator.RainValues();
 rainSimulator.SplitInRainEvents();
 rainSimulator.SimulateRainYear();
+
+rainprop::RainPropagation RainProp(60e09,100,0,0);
 
 return 0;
 }
