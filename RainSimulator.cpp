@@ -535,7 +535,8 @@ void RainSimulator::SimulateRainYear(){
                 }  
             }  
         }   
-    }   
+    }
+    R_01_simulated=SimulatedValues;   
 };
 
 

@@ -13,8 +13,8 @@ public:
     SpecRainAttCoeff SpecRainAttCoeffs();
     RainAttCoeff RainAttCoeffs();
 
-    // double SpecificAttenuation();
-    // std::vector<Matrix> SpecificAttenuation();
+    double SpecAtt(double R);
+    std::vector<std::vector<double>> SpecAtt(std::vector<std::vector<double>> R);
 
     // double EffectivePathLength();
     // std::vector<Matrix> EffectivePathLength();

@@ -93,4 +93,19 @@ RainAttCoeff RainPropagation::RainAttCoeffs(){
     return attcoeffs;
 };
 
+double RainPropagation::SpecAtt(double R){
+    return GammaCoeffs.k*pow(R,GammaCoeffs.a);
+};
+
+std::vector<std::vector<double> > RainPropagation::SpecAtt(std::vector<std::vector<double>> R){
+    std::vector<std::vector<double> > gamma_R = R;
+
+    for (int i = 0; i < R.size(); i++){
+        for (int j = 0; j < R[i].size(); j++){
+            gamma_R[i][j]= SpecAtt(R[i][j] ) ;
+        }
+    }
+    return gamma_R;
+};
+
 }

@@ -19,7 +19,9 @@ rainSimulator.RainValues();
 rainSimulator.SplitInRainEvents();
 rainSimulator.SimulateRainYear();
 
-rainprop::RainPropagation RainProp(60e09,100,0,0);
+rainprop::RainPropagation RainProp(60e09,1000,0,0);
+
+std::cout<<RainProp.SpecAtt(50)<<std::endl;
 
 return 0;
 }
