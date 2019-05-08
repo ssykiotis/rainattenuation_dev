@@ -1,6 +1,8 @@
 #ifndef RAINPROPAGATION_H
 #define RAINPROPAGATION
 
+#include <vector>
+
 #include "structs.h"
 
 namespace rainprop{
@@ -16,12 +18,11 @@ public:
     double SpecAtt(double R);
     std::vector<std::vector<double>> SpecAtt(std::vector<std::vector<double>> R);
 
-    // double EffectivePathLength();
-    // std::vector<Matrix> EffectivePathLength();
+    std::vector<double> EffectivePathLength(std::vector<double> Rprctl);
 
     // double TotalRainAtt();
     // std::vector<Matrix> TotalRainAtt();
-
+    std::vector<double> effpl;
 
 private:
 
@@ -32,6 +33,7 @@ private:
     double tau;
     SpecRainAttCoeff SpecGammaCoeffs;
     RainAttCoeff GammaCoeffs;
+    
 
 };
 }

@@ -11,6 +11,7 @@ RainPropagation::RainPropagation(double f,double d){
     this->tau = 0;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
+    // this->effPathLength = EffectivePathLength(Rprctl);    
 };
 RainPropagation::RainPropagation(double f,double d,double theta,double tau){
     this->f = f;
@@ -19,6 +20,7 @@ RainPropagation::RainPropagation(double f,double d,double theta,double tau){
     this->tau = tau;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
+    // this->effPathLength = EffectivePathLength(Rprctl);
 };
 
 SpecRainAttCoeff RainPropagation::SpecRainAttCoeffs(){
@@ -106,6 +108,21 @@ std::vector<std::vector<double> > RainPropagation::SpecAtt(std::vector<std::vect
         }
     }
     return gamma_R;
+};
+
+std::vector<double> RainPropagation::EffectivePathLength(std::vector<double> Rprctl){
+    double f_ghz = f/1e09;
+    std::vector<double> r;
+    double r_month=0;
+    double term1;
+    double term2;
+    for (int i = 0; i < Rprctl.size(); i++){
+        term1 = 0.477*pow(d,0.633)*pow(Rprctl[i],0.073*GammaCoeffs.a)*pow(f_ghz,0.123);
+        term2 = 10.579*(1-exp(-0.024*d));
+        r_month = 1/(term1-term2); 
+        r.push_back(r_month);  
+    }
+    return r;
 };
 
 

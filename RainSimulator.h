@@ -34,10 +34,11 @@ public:
     void SplitInRainEvents();
     void SimulateRainYear();
 
-    double GetR_001(int i);
+    std::vector<double> GetR_001();
 
     std::vector<std::vector<double> > GetSimulatedValues(int i);
     void RainPercentile();
+
 private:
 
     //Helper functions for internal use
@@ -60,6 +61,7 @@ private:
     std::vector< std::vector<RainEvent> > RainEvents;
     std::vector<Matrix> R_01_simulated;
     std::vector<double> R_001;
+
 
 };
 

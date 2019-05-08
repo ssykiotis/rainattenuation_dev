@@ -541,8 +541,8 @@ std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
     return R_01_simulated[i].v;
 };
 
-double RainSimulator::GetR_001(int i){
-    return this->R_001[i];
+std::vector<double> RainSimulator::GetR_001(){
+    return this->R_001;
 };
 
 void RainSimulator::RainPercentile(){
@@ -571,7 +571,7 @@ void RainSimulator::RainPercentile(){
         //
         R_1d.clear();
     } 
-    R_001 = R_prctiles;
+    this->R_001 = R_prctiles;
 };
 
 }
