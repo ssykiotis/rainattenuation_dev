@@ -34,6 +34,8 @@ public:
     void SplitInRainEvents();
     void SimulateRainYear();
 
+    std::vector<std::vector<double> > GetSimulatedValues(int i);
+
 private:
 
     //Helper functions for internal use

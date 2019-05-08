@@ -539,5 +539,9 @@ void RainSimulator::SimulateRainYear(){
     R_01_simulated=SimulatedValues;   
 };
 
+std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
+    return R_01_simulated[i].v;
+};
+
 
 }
