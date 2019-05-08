@@ -6,6 +6,7 @@
 #include <cstring>
 #include "math.h"
 #include <random>
+#include <bits/stdc++.h> 
  
 
 namespace rainprop{
@@ -25,13 +26,11 @@ Cords RainSimulator::GetLocation(){
     return this->loc;
 };
 
-char RainSimulator::GetClimaticRegion()
-{
+char RainSimulator::GetClimaticRegion(){
     return this->cl_region;
 };
 
-char RainSimulator::DecideClimaticRegion()
-{
+char RainSimulator::DecideClimaticRegion(){
     std::vector<Koppen> koppen = ReadKoppen();
     std::vector<Koppen> koppen_search = koppen;
 
@@ -79,8 +78,7 @@ char RainSimulator::DecideClimaticRegion()
     return a;
 };
 
-std::vector<Koppen> RainSimulator::ReadKoppen()
-{
+std::vector<Koppen> RainSimulator::ReadKoppen(){
     std::vector<Koppen> v;
     std::ifstream ip("rain_data/koppen.csv");
 
@@ -543,5 +541,37 @@ std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
     return R_01_simulated[i].v;
 };
 
+double RainSimulator::GetR_001(int i){
+    return this->R_001[i];
+};
+
+void RainSimulator::RainPercentile(){
+    std::vector<double> R_prctiles;
+    std::vector<std::vector<double> > R_temp;
+    std::vector<double> R_1d;
+    
+    double r;
+    double k;
+    double y;
+
+    for (int i = 0; i < R_01.size(); i++){
+        R_temp = R_01[i].v;
+        for (int  j = 0; j < R_01[i].v.size(); j++){
+            for (int k = 0; k < 11; k++){
+                R_1d.push_back(R_temp[j][k]);
+            }
+        }
+        //calculate the percentile
+        std::sort(R_1d.begin(),R_1d.end());
+        r = 0.9999*R_1d.size();
+        k = floor(r+0.5);
+        r-=k;
+        y = (0.5-r)*R_1d[k-1]+(0.5+r)*R_1d[k];
+        R_prctiles.push_back(y);
+        //
+        R_1d.clear();
+    } 
+    R_001 = R_prctiles;
+};
 
 }

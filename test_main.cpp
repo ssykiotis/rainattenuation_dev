@@ -21,15 +21,14 @@ rainSimulator.ITUR837_calculation();
 rainSimulator.RainValues();
 rainSimulator.SplitInRainEvents();
 rainSimulator.SimulateRainYear();
+rainSimulator.RainPercentile();
 
 rainprop::RainPropagation RainProp(60e09,1000,0,0);
 
-std::cout<<RainProp.SpecAtt(50)<<std::endl;
-
-std::vector<rainprop::Matrix> rainatt{12};
-for (int i = 0; i < rainatt.size(); i++){
-    rainatt[i].v = RainProp.SpecAtt(rainSimulator.GetSimulatedValues(i));
-}
+// std::vector<rainprop::Matrix> rainatt{12};
+// for (int i = 0; i < rainatt.size(); i++){
+//     rainatt[i].v = RainProp.SpecAtt(rainSimulator.GetSimulatedValues(i));
+// }
 
 
 return 0;
