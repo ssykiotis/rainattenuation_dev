@@ -11,24 +11,11 @@ RainSimulator::RainSimulator(Control controlSettings){
     cl_region = DecideClimaticRegion();
 };
 
-Cords RainSimulator::SetLocation(Cords loc){
-    this->loc = loc;
-};
-
-Cords RainSimulator::GetLocation(){
-    return this->loc;
-};
-
-char RainSimulator::GetClimaticRegion(){
-    return this->cl_region;
-};
-
 char RainSimulator::DecideClimaticRegion(){
     std::vector<Koppen> koppen = ReadKoppen();
     std::vector<Koppen> koppen_search = koppen;
 
-    for (int i = 0; i < koppen_search.size(); i++)
-    {
+    for (int i = 0; i < koppen_search.size(); i++){
         koppen_search[i].lat = fabs(koppen[i].lat - loc.lat);
         koppen_search[i].lon = fabs(koppen[i].lon - loc.lon);
     }
@@ -36,28 +23,22 @@ char RainSimulator::DecideClimaticRegion(){
     int index = 0;
     double min = koppen_search[0].lon;
 
-    for (int i = 0; i < koppen_search.size(); i++)
-    {
-        if (koppen_search[i].lon < min)
-        {
+    for (int i = 0; i < koppen_search.size(); i++){
+        if (koppen_search[i].lon < min){
             index = i;
             min = koppen_search[i].lon;
         }
     }
 
-    if (koppen[index + 1].lon == koppen[index].lon)
-    {
+    if (koppen[index + 1].lon == koppen[index].lon){
         int last_index = index + 1;
 
-        while (koppen_search[last_index].lon == min)
-        {
+        while (koppen_search[last_index].lon == min){
             last_index++;
         }
         min = koppen_search[index].lat;
-        for (int i = index; i < last_index; i++)
-        {
-            if (koppen_search[i].lat < min)
-            {
+        for (int i = index; i < last_index; i++){
+            if (koppen_search[i].lat < min){
                 index = i;
                 min = koppen_search[i].lat;
             }
@@ -71,191 +52,19 @@ char RainSimulator::DecideClimaticRegion(){
     return a;
 };
 
-std::vector<Koppen> RainSimulator::ReadKoppen(){
-    std::vector<Koppen> v;
-    std::ifstream ip("rain_data/koppen.csv");
-
-    std::string readlat;
-    std::string readlon;
-    std::string readregion;
-
-    Koppen cords;
-
-    while (ip.good())
-    {
-
-        getline(ip, readlon, ',');
-        getline(ip, readlat, ',');
-        getline(ip, readregion, '\n');
-
-        cords.lat = atof(readlat.c_str());
-        cords.lon = atof(readlon.c_str());
-        cords.region = readregion;
-
-        v.push_back(cords);
-    }
-
-    ip.close();
-    return v;
+char RainSimulator::GetClimaticRegion(){
+    return this->cl_region;
 };
 
-std::vector<double> RainSimulator::ReadCoordinates(const char *filename){
-    std::vector<double> v;
-    std::ifstream ip(filename);
-    std::string readval;
-
-    while (ip.good())
-    {
-        getline(ip, readval, '\n');
-        v.push_back(atof(readval.c_str()));
-    }
-    ip.close();
-    return v;
+Cords RainSimulator::SetLocation(Cords loc){
+    this->loc = loc;
 };
 
-int RainSimulator::FindMinIndex(std::vector<double> map){
-    int minIndex = 0;
-    double min = map[0];
-
-    for (int i = 0; i < map.size(); i++)
-    {
-        if (map[i] < min)
-        {
-            minIndex = i;
-            min = map[i];
-        }
-    }
-    return minIndex;
-};
-
-std::vector<Cords> RainSimulator::ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latIndex,int lonIndex){
-
-    std::vector<Cords> sq1;
-    sq1.push_back( {latIndex  , lonIndex-1} );
-    sq1.push_back( {latIndex-1, lonIndex-1} );
-    sq1.push_back( {latIndex-1, lonIndex  } );
-    sq1.push_back( {latIndex  , lonIndex  } );
-
-    std::vector<Cords> sq2;
-    sq2.push_back( {latIndex  , lonIndex  } );
-    sq2.push_back( {latIndex-1, lonIndex  } );
-    sq2.push_back( {latIndex-1, lonIndex+1} );
-    sq2.push_back( {latIndex  , lonIndex+1} );
-
-    std::vector<Cords> sq3;
-    sq3.push_back( {latIndex+1, lonIndex-1} );
-    sq3.push_back( {latIndex  , lonIndex-1} );
-    sq3.push_back( {latIndex  , lonIndex  } );
-    sq3.push_back( {latIndex+1, lonIndex  } );
-    
-    std::vector<Cords> sq4;
-    sq4.push_back( {latIndex+1, lonIndex  } );
-    sq4.push_back( {latIndex  , lonIndex  } );
-    sq4.push_back( {latIndex  , lonIndex+1} );
-    sq4.push_back( {latIndex+1, lonIndex+1} );
-    
-
-    std::vector<double> dist; 
-    Cords point;
-
-    double d =0;
-    for (int i = 0; i < sq1.size(); i++)
-    {
-        point = sq1[i];
-        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
-    }
-    dist.push_back(d);
-
-    d =0;
-    for (int i = 0; i < sq2.size(); i++)
-    {
-        point = sq2[i];
-        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
-    }
-    dist.push_back(d);
-    
-    d =0;
-    for (int i = 0; i < sq3.size(); i++)
-    {
-        point = sq3[i];
-        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
-    }
-    dist.push_back(d);
-
-    d =0;
-    for (int i = 0; i < sq4.size(); i++)
-    {
-        point = sq4[i];
-        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
-    }
-    dist.push_back(d);
-
-    int minIndex = 0;
-    double min = dist[0];
-
-    for (int i = 0; i < dist.size(); i++){
-        if (dist[i]<min)
-        {
-            minIndex = i;
-            min = dist[i];
-        }
-        
-    }
-
-    switch (minIndex)
-    {
-    case 0:
-        return sq1;
-    case 1:
-        return sq2;    
-    case 2:
-        return sq3;    
-    case 3:
-        return sq4;
-    default:
-        break;
-    }
-    
-};
-
-double RainSimulator::BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap){
-
-    double R = sq[0].lat;
-    double C = sq[0].lon;
-    double r = R+ (lat - latMap[R])/(latMap[R+1]-latMap[R]);
-    double c = C+ (lon-lonMap[C])/(lonMap[C+1]-lonMap[C]);
-
-    double I_rc = T[0]*(R-r+1)*(C-c+1)+T[1]*(r-R)*(C-c+1) +T[2]*(R-r+1)*(c-C) + T[3]*(r-R)*(c-C);
-    return I_rc; 
-};
-
-double RainSimulator::ReadCsvValue(const char* filename,int i, int latMinIndex, int lonMinIndex){
-        
-        char buffer[100];
-        int n = sprintf(buffer, filename, i);
-        std::ifstream ip(buffer);
-        std::string line;
-        int LinesToGo = latMinIndex;
-        while (getline(ip, line) && (LinesToGo > 0))
-        {
-            LinesToGo--;
-        }
-        ip.close();
-        int index = 0;
-        std::string delimiter = " ";
-        while (index != lonMinIndex)
-        {
-            line.erase(0, line.find(delimiter) + delimiter.length());
-            index++;
-        }
-        std::string val = line.substr(0, line.find(delimiter));
-
-        return atof(val.c_str());
-
+Cords RainSimulator::GetLocation(){
+    return this->loc;
 };
 
 ITUR837_values RainSimulator::ITUR837_calculation(){
-
 
     //calculate Mean Temperatures
     std::vector<double> latMap = ReadCoordinates("rain_data/ITU/temperature/LAT_T.csv");
@@ -315,7 +124,6 @@ ITUR837_values RainSimulator::ITUR837_calculation(){
         MT.clear();     
     } 
 
-    //
     for (int i = 0; i < 12; i++){
         itu_v.Temperature[i] -= 273.15;
         if (itu_v.Temperature[i]>=0){
@@ -330,7 +138,6 @@ ITUR837_values RainSimulator::ITUR837_calculation(){
             itu_v.r[i] = 100*itu_v.MonthlyTotal[i]/(70*24);
         }
     }
-    
 };
 
 void RainSimulator::RainValues(){
@@ -350,7 +157,7 @@ void RainSimulator::RainValues(){
         filename = "rain_data/snow.csv";
         break;
     case 'E':
-        break;
+        filename = "rain_data/snow.csv";
     default:
         break;
     }
@@ -358,53 +165,6 @@ void RainSimulator::RainValues(){
     std::vector<Matrix> R_60 = ReadRainValues(filename);
     std::vector<Matrix> R_01 = ConvertRainValues(R_60);
     this->R_01 = R_01;
-};
-
-
-std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
-    std::vector<Matrix> R_year;
-    Matrix R_temp;
-    std::vector <std::vector<double> > R_month;
-    std::string val;
-    std::vector<double> readvalues_line;
-    std::vector<int> monthhours_cumsum = this->control.monthhours_cumsum;
-    std::ifstream ip(filename);
-
-
-    for (int i = 0; i < (monthhours_cumsum.size()-1); i++){         //loop for months
-    
-        for (int j = monthhours_cumsum[i]; j< monthhours_cumsum[i+1]; j++){       //loop for lines of month
-              
-            for (int k = 0; k < 10; k++){                //read one line
-                getline(ip,val,',');
-                readvalues_line.push_back(atof(val.c_str()));
-            }
-            getline(ip,val,'\n');
-            readvalues_line.push_back(atof(val.c_str()));
-            R_month.push_back(readvalues_line);
-            readvalues_line.clear();
-        }
-        R_temp.v = R_month;
-        R_year.push_back(R_temp);
-        R_month.clear();
-        
-    }
-    return R_year;
-    
-};
-
-std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
-    double a = 0.509;
-    double b= 1.394;
-    std::vector<Matrix> R_01 = R_60;
-    for (int k = 0; k < R_01.size(); k++){
-        for (int i = 0; i < R_01[k].v.size(); i++){
-            for (int j=0; j<R_01[k].v[i].size() ; j++){
-                R_01[k].v[i][j] = pow(a*R_01[k].v[i][j],b);
-            }    
-        }   
-    }
-    return R_01;
 };
 
 void RainSimulator::SplitInRainEvents(){
@@ -487,7 +247,6 @@ void RainSimulator::SimulateRainYear(){
                     event.i++;
                     j++;
                 }
-                
             }
             else{
                 values[j].push_back(0);
@@ -503,8 +262,6 @@ void RainSimulator::SimulateRainYear(){
     std::default_random_engine generator;
     std::normal_distribution<double> distribution;
     double nvalue;
-
-
 
     for (int i = 0; i < SimulatedValues.size(); i++){
         for (int j = 0; j < SimulatedValues[i].v.size(); j++){
@@ -530,14 +287,6 @@ void RainSimulator::SimulateRainYear(){
     R_01_simulated=SimulatedValues;   
 };
 
-std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
-    return R_01_simulated[i].v;
-};
-
-std::vector<double> RainSimulator::GetR_001(){
-    return this->R_001;
-};
-
 void RainSimulator::RainPercentile(){
     std::vector<double> R_prctiles;
     std::vector<std::vector<double> > R_temp;
@@ -561,10 +310,226 @@ void RainSimulator::RainPercentile(){
         r-=k;
         y = (0.5-r)*R_1d[k-1]+(0.5+r)*R_1d[k];
         R_prctiles.push_back(y);
-        //
         R_1d.clear();
     } 
     this->R_001 = R_prctiles;
+};
+
+std::vector<double> RainSimulator::GetR_001(){
+    return this->R_001;
+};
+
+std::vector<Koppen> RainSimulator::ReadKoppen(){
+    std::vector<Koppen> v;
+    std::ifstream ip("rain_data/koppen.csv");
+
+    std::string readlat;
+    std::string readlon;
+    std::string readregion;
+
+    Koppen cords;
+
+    while (ip.good()){
+        getline(ip, readlon, ',');
+        getline(ip, readlat, ',');
+        getline(ip, readregion, '\n');
+
+        cords.lat = atof(readlat.c_str());
+        cords.lon = atof(readlon.c_str());
+        cords.region = readregion;
+
+        v.push_back(cords);
+    }
+
+    ip.close();
+    return v;
+};
+
+std::vector<double> RainSimulator::ReadCoordinates(const char *filename){
+    std::vector<double> v;
+    std::ifstream ip(filename);
+    std::string readval;
+
+    while (ip.good())
+    {
+        getline(ip, readval, '\n');
+        v.push_back(atof(readval.c_str()));
+    }
+    ip.close();
+    return v;
+};
+
+int RainSimulator::FindMinIndex(std::vector<double> map){
+    int minIndex = 0;
+    double min = map[0];
+
+    for (int i = 0; i < map.size(); i++){
+        if (map[i] < min){
+            minIndex = i;
+            min = map[i];
+        }
+    }
+    return minIndex;
+};
+
+std::vector<Cords> RainSimulator::ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latIndex,int lonIndex){
+
+    std::vector<Cords> sq1;
+    sq1.push_back( {latIndex  , lonIndex-1} );
+    sq1.push_back( {latIndex-1, lonIndex-1} );
+    sq1.push_back( {latIndex-1, lonIndex  } );
+    sq1.push_back( {latIndex  , lonIndex  } );
+
+    std::vector<Cords> sq2;
+    sq2.push_back( {latIndex  , lonIndex  } );
+    sq2.push_back( {latIndex-1, lonIndex  } );
+    sq2.push_back( {latIndex-1, lonIndex+1} );
+    sq2.push_back( {latIndex  , lonIndex+1} );
+
+    std::vector<Cords> sq3;
+    sq3.push_back( {latIndex+1, lonIndex-1} );
+    sq3.push_back( {latIndex  , lonIndex-1} );
+    sq3.push_back( {latIndex  , lonIndex  } );
+    sq3.push_back( {latIndex+1, lonIndex  } );
+    
+    std::vector<Cords> sq4;
+    sq4.push_back( {latIndex+1, lonIndex  } );
+    sq4.push_back( {latIndex  , lonIndex  } );
+    sq4.push_back( {latIndex  , lonIndex+1} );
+    sq4.push_back( {latIndex+1, lonIndex+1} );
+    
+    std::vector<double> dist; 
+    Cords point;
+
+    double d =0;
+    for (int i = 0; i < sq1.size(); i++){
+        point = sq1[i];
+        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
+    }
+    dist.push_back(d);
+
+    d =0;
+    for (int i = 0; i < sq2.size(); i++){
+        point = sq2[i];
+        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
+    }
+    dist.push_back(d);
+    
+    d =0;
+    for (int i = 0; i < sq3.size(); i++){
+        point = sq3[i];
+        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
+    }
+    dist.push_back(d);
+
+    d =0;
+    for (int i = 0; i < sq4.size(); i++){
+        point = sq4[i];
+        d+= pow(latMap[point.lat],2) + pow(lonMap[point.lon],2);
+    }
+    dist.push_back(d);
+
+    int minIndex = 0;
+    double min = dist[0];
+
+    for (int i = 0; i < dist.size(); i++){
+        if (dist[i]<min){
+            minIndex = i;
+            min = dist[i];
+        } 
+    }
+
+    switch (minIndex){
+    case 0:
+        return sq1;
+    case 1:
+        return sq2;    
+    case 2:
+        return sq3;    
+    case 3:
+        return sq4;
+    default:
+        break;
+    }
+};
+
+double RainSimulator::BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap){
+
+    double R = sq[0].lat;
+    double C = sq[0].lon;
+    double r = R+ (lat - latMap[R])/(latMap[R+1]-latMap[R]);
+    double c = C+ (lon-lonMap[C])/(lonMap[C+1]-lonMap[C]);
+
+    double I_rc = T[0]*(R-r+1)*(C-c+1)+T[1]*(r-R)*(C-c+1) +T[2]*(R-r+1)*(c-C) + T[3]*(r-R)*(c-C);
+    return I_rc; 
+};
+
+double RainSimulator::ReadCsvValue(const char* filename,int i, int latMinIndex, int lonMinIndex){
+        
+        char buffer[100];
+        int n = sprintf(buffer, filename, i);
+        std::ifstream ip(buffer);
+        std::string line;
+        int LinesToGo = latMinIndex;
+        while (getline(ip, line) && (LinesToGo > 0)){
+            LinesToGo--;
+        }
+        ip.close();
+        int index = 0;
+        std::string delimiter = " ";
+        while (index != lonMinIndex){
+            line.erase(0, line.find(delimiter) + delimiter.length());
+            index++;
+        }
+        std::string val = line.substr(0, line.find(delimiter));
+
+        return atof(val.c_str());
+};
+
+std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
+    std::vector<Matrix> R_year;
+    Matrix R_temp;
+    std::vector <std::vector<double> > R_month;
+    std::string val;
+    std::vector<double> readvalues_line;
+    std::vector<int> monthhours_cumsum = this->control.monthhours_cumsum;
+    std::ifstream ip(filename);
+
+    for (int i = 0; i < (monthhours_cumsum.size()-1); i++){         //loop for months
+    
+        for (int j = monthhours_cumsum[i]; j< monthhours_cumsum[i+1]; j++){   //loop for lines of month
+            for (int k = 0; k < 10; k++){                //read one line
+                getline(ip,val,',');
+                readvalues_line.push_back(atof(val.c_str()));
+            }
+            getline(ip,val,'\n');
+            readvalues_line.push_back(atof(val.c_str()));
+            R_month.push_back(readvalues_line);
+            readvalues_line.clear();
+        }
+        R_temp.v = R_month;
+        R_year.push_back(R_temp);
+        R_month.clear();
+    }
+    return R_year;
+};
+
+std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
+    double a = 0.509;
+    double b= 1.394;
+    std::vector<Matrix> R_01 = R_60;
+    for (int k = 0; k < R_01.size(); k++){
+        for (int i = 0; i < R_01[k].v.size(); i++){
+            for (int j=0; j<R_01[k].v[i].size() ; j++){
+                R_01[k].v[i][j] = pow(a*R_01[k].v[i][j],b);
+            }    
+        }   
+    }
+    return R_01;
+};
+
+std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
+    return R_01_simulated[i].v;
 };
 
 }

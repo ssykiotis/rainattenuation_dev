@@ -24,36 +24,17 @@ namespace rainprop{
         ComputeMonthhoursCumSum();
     };
 
-    void Control::SetMonthdays(){
-        monthdays.push_back(31);
-        monthdays.push_back(28);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
+    Control::Control(double lat,double lon, double f, double dist, int states){
+        this->loc.lat = lat;
+        this->loc.lon = lon;
+        this->f = f;
+        this->dist = dist;
+        this->FSMC_states = states;
+        SetMonthdays();
+        SetMonthhours();
+        ComputeMonthhoursCumSum();
     };
 
-    void Control::SetMonthhours(){
-
-        monthhours.push_back(744);
-        monthhours.push_back(672);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-    };
 
     void Control::SetLocation(double lat, double lon){
        Cords loc = {lat,lon};
@@ -68,7 +49,7 @@ namespace rainprop{
         this->dist = dist;
     };
 
-    void Control::SetFSMCSettings(int states){
+    void Control::SetFSMCStates(int states){
         this->FSMC_states = states;
     };
 
@@ -88,6 +69,35 @@ namespace rainprop{
         return this->FSMC_states;
     };
 
+    void Control::SetMonthdays(){
+        monthdays.push_back(31);
+        monthdays.push_back(28);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+        monthdays.push_back(30);
+        monthdays.push_back(31);
+    };
+
+    void Control::SetMonthhours(){
+        monthhours.push_back(744);
+        monthhours.push_back(672);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+        monthhours.push_back(720);
+        monthhours.push_back(744);
+    };
 
     void Control::ComputeMonthhoursCumSum(){
         std::vector<int> v_cum;

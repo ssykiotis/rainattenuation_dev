@@ -10,12 +10,12 @@ class Control{
 public:
     Control();
     Control(double lat,double lon);
+    Control(double lat,double lon, double f, double dist, int states);
 
     void SetLocation(double lon, double lat);
     void SetFrequency(double freq);
     void SetDistance(double dist);
-    void SetFSMCSettings(int states);
-
+    void SetFSMCStates(int states);
 
     Cords GetLocation();
     double GetFrequency();
@@ -27,7 +27,7 @@ public:
     std::vector<int> monthhours_cumsum;
 
 private:
-
+    //internal functions used by the constructor
     void SetMonthdays();
     void SetMonthhours();
     void ComputeMonthhoursCumSum();

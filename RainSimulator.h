@@ -14,28 +14,30 @@ public:
 
     RainSimulator(Control controlSettings);
 
-    std::vector<Koppen> ReadKoppen();
-    std::vector<double> ReadCoordinates(const char* filename);
-
-    char GetClimaticRegion();
     char DecideClimaticRegion();
+    char GetClimaticRegion();
 
-    Cords GetLocation();
     Cords SetLocation(Cords loc);
+    Cords GetLocation();
+
     ITUR837_values ITUR837_calculation();
 
     void RainValues();
     void SplitInRainEvents();
     void SimulateRainYear();
-
-    std::vector<double> GetR_001();
-
     std::vector<std::vector<double> > GetSimulatedValues(int i);
+
+
     void RainPercentile();
+    std::vector<double> GetR_001();
 
 private:
 
     //Helper functions for internal use
+    std::vector<Koppen> ReadKoppen();
+    std::vector<double> ReadCoordinates(const char* filename);
+
+
     int FindMinIndex(std::vector<double> map);
     std::vector<Cords> ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latMinIndex,int lonMinIndex);
     double BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap);
@@ -44,7 +46,6 @@ private:
     std::vector<Matrix> ReadRainValues(const char* filename);
     std::vector<Matrix> ConvertRainValues(std::vector<Matrix> R_60);
    
-
     //
     
     Cords loc;

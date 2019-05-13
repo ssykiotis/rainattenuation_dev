@@ -1,11 +1,11 @@
 
-#include <iostream>
+#include <iostream> //FOR TESTING PURPOSES, TO BE REMOVED LATER
 
 #include "structs.h"
 #include "control.h"
 #include "RainSimulator.h"
 #include "RainPropagation.h"
-
+#include "malloc.h"
 
 
 int main(){
