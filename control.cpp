@@ -1,5 +1,5 @@
+
 #include "control.h"
-#include <vector>
 
 namespace rainprop{
 

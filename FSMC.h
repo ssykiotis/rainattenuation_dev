@@ -1,5 +1,7 @@
 #ifndef FSMC_H
-#define FSMC
+#define FSMC_H
+
+#include "structs.h"
 
 namespace rainprop{
 

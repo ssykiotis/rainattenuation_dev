@@ -1,7 +1,6 @@
 #ifndef RAINPROPAGATION_H
-#define RAINPROPAGATION
+#define RAINPROPAGATION_H
 
-#include <vector>
 
 #include "structs.h"
 
@@ -21,8 +20,9 @@ public:
     std::vector<double> EffectivePathLength(std::vector<double> Rprctl);
 
     // double TotalRainAtt();
+    
     // std::vector<Matrix> TotalRainAtt();
-    std::vector<double> effpl;
+    // std::vector<double> effpl;
 
 private:
 

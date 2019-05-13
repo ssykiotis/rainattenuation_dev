@@ -1,10 +1,11 @@
 
 #include <iostream>
 
+#include "structs.h"
 #include "control.h"
 #include "RainSimulator.h"
 #include "RainPropagation.h"
-#include "structs.h"
+
 
 
 int main(){

@@ -1,14 +1,8 @@
 #ifndef RAINSIMULATOR_H
 #define RAINSIMULATOR_H
 
-
-#include <iostream>
-#include <fstream>
-#include <vector>
-
-#include <stdlib.h>
-#include "control.h"
 #include "structs.h"
+#include "control.h"
 
 
 namespace rainprop{

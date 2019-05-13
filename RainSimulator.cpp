@@ -1,13 +1,6 @@
+
 #include "RainSimulator.h"
-#include <iostream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <cstring>
-#include "math.h"
-#include <random>
-#include <bits/stdc++.h> 
- 
+#include <bits/stdc++.h>  
 
 namespace rainprop{
 

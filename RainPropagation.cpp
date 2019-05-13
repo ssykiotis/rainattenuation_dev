@@ -1,6 +1,5 @@
 #include "RainPropagation.h"
 #include <math.h> 
-#include <cmath>
 
 namespace rainprop{
 

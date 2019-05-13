@@ -1,7 +1,6 @@
-#ifndef CONTROL_H
-#define CONTROL_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
-#include <stdlib.h>
 #include <string>
 #include <vector>
 

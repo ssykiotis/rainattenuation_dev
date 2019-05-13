@@ -1,13 +1,7 @@
 #ifndef CONTROL_H
-#define CONTROL
-
-#include <vector>
+#define CONTROL_H
 
 #include "structs.h"
-
-// using namespace ns3;
-
-
 
 namespace rainprop{
 
