@@ -22,7 +22,6 @@ public:
     double TotalRainAtt();
     
     // std::vector<Matrix> TotalRainAtt();
-    std::vector<double> effpl;
 
 private:
 
@@ -33,7 +32,8 @@ private:
     double tau;
     SpecRainAttCoeff SpecGammaCoeffs;
     RainAttCoeff GammaCoeffs;
-    
+    std::vector<double> effpl;
+
 
 };
 }

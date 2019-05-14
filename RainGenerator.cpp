@@ -1,17 +1,17 @@
 
-#include "RainSimulator.h"
+#include "RainGenerator.h"
 #include <bits/stdc++.h>  
 
 namespace rainprop{
 
-RainSimulator::RainSimulator(Control controlSettings){
+RainGenerator::RainGenerator(Control controlSettings){
     this->loc.lat = controlSettings.GetLocation().lat;
     this->loc.lon = controlSettings.GetLocation().lon;
     this->control = controlSettings;
     cl_region = DecideClimaticRegion();
 };
 
-char RainSimulator::DecideClimaticRegion(){
+char RainGenerator::DecideClimaticRegion(){
     std::vector<Koppen> koppen = ReadKoppen();
     std::vector<Koppen> koppen_search = koppen;
 
@@ -52,19 +52,19 @@ char RainSimulator::DecideClimaticRegion(){
     return a;
 };
 
-char RainSimulator::GetClimaticRegion(){
+char RainGenerator::GetClimaticRegion(){
     return this->cl_region;
 };
 
-Cords RainSimulator::SetLocation(Cords loc){
+Cords RainGenerator::SetLocation(Cords loc){
     this->loc = loc;
 };
 
-Cords RainSimulator::GetLocation(){
+Cords RainGenerator::GetLocation(){
     return this->loc;
 };
 
-void RainSimulator::ITUR837_calculation(){
+void RainGenerator::ITUR837_calculation(){
 
     //calculate Mean Temperatures
     std::vector<double> latMap = ReadCoordinates("rain_data/ITU/temperature/LAT_T.csv");
@@ -140,7 +140,7 @@ void RainSimulator::ITUR837_calculation(){
     }
 };
 
-void RainSimulator::RainValues(){
+void RainGenerator::RainValues(){
 
     const char* filename;
     switch (cl_region){
@@ -167,7 +167,7 @@ void RainSimulator::RainValues(){
     this->R_01 = R_01;
 };
 
-void RainSimulator::SplitInRainEvents(){
+void RainGenerator::SplitInRainEvents(){
 
     int j;
     int months = R_01.size();
@@ -211,7 +211,7 @@ void RainSimulator::SplitInRainEvents(){
     this->RainEvents = RainEvents_year;
 };
 
-void RainSimulator::SimulateRainYear(){
+void RainGenerator::SimulateRainYear(){
 
     std::vector<Matrix> SimulatedValues(12);
     int months = SimulatedValues.size();
@@ -287,7 +287,7 @@ void RainSimulator::SimulateRainYear(){
     R_01_simulated=SimulatedValues;   
 };
 
-void RainSimulator::RainPercentile(){
+void RainGenerator::RainPercentile(){
     std::vector<double> R_prctiles;
     std::vector<std::vector<double> > R_temp;
     std::vector<double> R_1d;
@@ -315,11 +315,11 @@ void RainSimulator::RainPercentile(){
     this->R_001 = R_prctiles;
 };
 
-std::vector<double> RainSimulator::GetR_001(){
+std::vector<double> RainGenerator::GetR_001(){
     return this->R_001;
 };
 
-std::vector<Koppen> RainSimulator::ReadKoppen(){
+std::vector<Koppen> RainGenerator::ReadKoppen(){
     std::vector<Koppen> v;
     std::ifstream ip("rain_data/koppen.csv");
 
@@ -345,7 +345,7 @@ std::vector<Koppen> RainSimulator::ReadKoppen(){
     return v;
 };
 
-std::vector<double> RainSimulator::ReadCoordinates(const char *filename){
+std::vector<double> RainGenerator::ReadCoordinates(const char *filename){
     std::vector<double> v;
     std::ifstream ip(filename);
     std::string readval;
@@ -359,7 +359,7 @@ std::vector<double> RainSimulator::ReadCoordinates(const char *filename){
     return v;
 };
 
-int RainSimulator::FindMinIndex(std::vector<double> map){
+int RainGenerator::FindMinIndex(std::vector<double> map){
     int minIndex = 0;
     double min = map[0];
 
@@ -372,7 +372,7 @@ int RainSimulator::FindMinIndex(std::vector<double> map){
     return minIndex;
 };
 
-std::vector<Cords> RainSimulator::ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latIndex,int lonIndex){
+std::vector<Cords> RainGenerator::ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latIndex,int lonIndex){
 
     std::vector<Cords> sq1;
     sq1.push_back( {latIndex  , lonIndex-1} );
@@ -453,7 +453,7 @@ std::vector<Cords> RainSimulator::ClosestPoints(std::vector<double> latMap,std::
     }
 };
 
-double RainSimulator::BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap){
+double RainGenerator::BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap){
 
     double R = sq[0].lat;
     double C = sq[0].lon;
@@ -464,7 +464,7 @@ double RainSimulator::BilinearInterpolation(std::vector<double> T, std::vector<C
     return I_rc; 
 };
 
-double RainSimulator::ReadCsvValue(const char* filename,int i, int latMinIndex, int lonMinIndex){
+double RainGenerator::ReadCsvValue(const char* filename,int i, int latMinIndex, int lonMinIndex){
         
         char buffer[100];
         int n = sprintf(buffer, filename, i);
@@ -486,7 +486,7 @@ double RainSimulator::ReadCsvValue(const char* filename,int i, int latMinIndex, 
         return atof(val.c_str());
 };
 
-std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
+std::vector<Matrix> RainGenerator::ReadRainValues(const char* filename){
     std::vector<Matrix> R_year;
     Matrix R_temp;
     std::vector <std::vector<double> > R_month;
@@ -514,7 +514,7 @@ std::vector<Matrix> RainSimulator::ReadRainValues(const char* filename){
     return R_year;
 };
 
-std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
+std::vector<Matrix> RainGenerator::ConvertRainValues(std::vector<Matrix> R_60){
     double a = 0.509;
     double b= 1.394;
     std::vector<Matrix> R_01 = R_60;
@@ -528,7 +528,7 @@ std::vector<Matrix> RainSimulator::ConvertRainValues(std::vector<Matrix> R_60){
     return R_01;
 };
 
-std::vector<std::vector<double> > RainSimulator::GetSimulatedValues(int i){
+std::vector<std::vector<double> > RainGenerator::GetSimulatedValues(int i){
     return R_01_simulated[i].v;
 };
 

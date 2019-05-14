@@ -1,5 +1,5 @@
-#ifndef RAINSIMULATOR_H
-#define RAINSIMULATOR_H
+#ifndef RAINGENERATOR_H
+#define RAINGENERATOR_H
 
 #include "structs.h"
 #include "control.h"
@@ -8,11 +8,11 @@
 namespace rainprop{
 
 
-class RainSimulator{
+class RainGenerator{
 
 public:
 
-    RainSimulator(Control controlSettings);
+    RainGenerator(Control controlSettings);
 
     char DecideClimaticRegion();
     char GetClimaticRegion();
