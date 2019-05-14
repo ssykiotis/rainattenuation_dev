@@ -8,8 +8,8 @@ namespace rainprop{
 class RainPropagation{
 
 public:
-    RainPropagation(double f,double d);
-    RainPropagation(double f,double d,double theta,double tau);    
+    RainPropagation(double f,double d,std::vector<double> Rprctl);
+    RainPropagation(double f,double d,double theta,double tau,std::vector<double> Rprctl);    
 
     SpecRainAttCoeff SpecRainAttCoeffs();
     RainAttCoeff RainAttCoeffs();
@@ -19,10 +19,10 @@ public:
 
     std::vector<double> EffectivePathLength(std::vector<double> Rprctl);
 
-    // double TotalRainAtt();
+    double TotalRainAtt();
     
     // std::vector<Matrix> TotalRainAtt();
-    // std::vector<double> effpl;
+    std::vector<double> effpl;
 
 private:
 

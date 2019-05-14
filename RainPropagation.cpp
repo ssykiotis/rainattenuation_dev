@@ -3,23 +3,23 @@
 
 namespace rainprop{
 
-RainPropagation::RainPropagation(double f,double d){
+RainPropagation::RainPropagation(double f,double d,std::vector<double> Rprctl){
     this->f = f;
     this->d = d;
     this->theta = 0;
     this->tau = 0;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
-    // this->effPathLength = EffectivePathLength(Rprctl);    
+    this->effpl = EffectivePathLength(Rprctl);    
 };
-RainPropagation::RainPropagation(double f,double d,double theta,double tau){
+RainPropagation::RainPropagation(double f,double d,double theta,double tau,std::vector<double> Rprctl){
     this->f = f;
     this->d = d;
     this->theta = theta;
     this->tau = tau;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
-    // this->effPathLength = EffectivePathLength(Rprctl);
+    this->effpl = EffectivePathLength(Rprctl);
 };
 
 SpecRainAttCoeff RainPropagation::SpecRainAttCoeffs(){
@@ -77,8 +77,8 @@ SpecRainAttCoeff RainPropagation::SpecRainAttCoeffs(){
     }
     gammacoeffs.a_h+=log_f*a_h_m+a_h_c;
     gammacoeffs.a_v+=log_f*a_v_m+a_v_c;
-    gammacoeffs.k_h = pow10(gammacoeffs.k_h);
-    gammacoeffs.k_v = pow10(gammacoeffs.k_v);
+    gammacoeffs.k_h = pow(10,gammacoeffs.k_h);
+    gammacoeffs.k_v = pow(10,gammacoeffs.k_v);
 
     return gammacoeffs;
 

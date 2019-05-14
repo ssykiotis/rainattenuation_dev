@@ -64,7 +64,7 @@ Cords RainSimulator::GetLocation(){
     return this->loc;
 };
 
-ITUR837_values RainSimulator::ITUR837_calculation(){
+void RainSimulator::ITUR837_calculation(){
 
     //calculate Mean Temperatures
     std::vector<double> latMap = ReadCoordinates("rain_data/ITU/temperature/LAT_T.csv");

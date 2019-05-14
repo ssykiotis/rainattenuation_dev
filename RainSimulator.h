@@ -20,7 +20,7 @@ public:
     Cords SetLocation(Cords loc);
     Cords GetLocation();
 
-    ITUR837_values ITUR837_calculation();
+    void ITUR837_calculation();
 
     void RainValues();
     void SplitInRainEvents();
@@ -37,7 +37,6 @@ private:
     std::vector<Koppen> ReadKoppen();
     std::vector<double> ReadCoordinates(const char* filename);
 
-
     int FindMinIndex(std::vector<double> map);
     std::vector<Cords> ClosestPoints(std::vector<double> latMap,std::vector<double> lonMap, int latMinIndex,int lonMinIndex);
     double BilinearInterpolation(std::vector<double> T, std::vector<Cords> sq, double lat,double lon, std::vector<double> latMap,std::vector<double>lonMap);
@@ -45,7 +44,6 @@ private:
 
     std::vector<Matrix> ReadRainValues(const char* filename);
     std::vector<Matrix> ConvertRainValues(std::vector<Matrix> R_60);
-   
     //
     
     Cords loc;
@@ -57,9 +55,7 @@ private:
     std::vector<Matrix> R_01_simulated;
     std::vector<double> R_001;
 
-
 };
-
 }
 
 #endif
