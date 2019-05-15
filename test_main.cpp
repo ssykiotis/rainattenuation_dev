@@ -13,17 +13,7 @@ int main(){
 rainprop::Control controlSettings(52.52,13.4049);
 
 rainprop::RainGenerator rainGenerator(controlSettings);
-
-std::cout <<rainGenerator.GetClimaticRegion()<<std::endl;
-std::cout << rainGenerator.GetLocation().lat <<std::endl;
-std::cout << rainGenerator.GetLocation().lon <<std::endl;
-
-
-rainGenerator.ITUR837_calculation();
-rainGenerator.RainValues();
-rainGenerator.SplitInRainEvents();
-rainGenerator.SimulateRainYear();
-rainGenerator.RainPercentile();
+rainGenerator.Run();
 
 rainprop::RainPropagation RainProp(60e09,1000,0,0,rainGenerator.GetR_001());
 

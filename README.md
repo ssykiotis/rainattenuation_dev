@@ -9,4 +9,4 @@ Classes:
   
 Progress: 10/23  functions implemented : ~44% done
 
-g++ -g -std=c++11 -w test_main.cpp RainPropagation.cpp RainSimulator.cpp control.cpp -o test_main
+g++ -g -std=c++11 -w test_main.cpp RainPropagation.cpp RainGenerator.cpp control.cpp -o test_main

@@ -8,7 +8,7 @@ RainGenerator::RainGenerator(Control controlSettings){
     this->loc.lat = controlSettings.GetLocation().lat;
     this->loc.lon = controlSettings.GetLocation().lon;
     this->control = controlSettings;
-    cl_region = DecideClimaticRegion();
+    this->cl_region = DecideClimaticRegion();
 };
 
 char RainGenerator::DecideClimaticRegion(){
@@ -287,6 +287,18 @@ void RainGenerator::SimulateRainYear(){
     R_01_simulated=SimulatedValues;   
 };
 
+std::vector<std::vector<double> > RainGenerator::GetSimulatedValues(int i){
+    return R_01_simulated[i].v;
+};
+
+void RainGenerator::Run(){
+    ITUR837_calculation();
+    RainValues();
+    SplitInRainEvents();
+    RainPercentile();
+    SimulateRainYear();
+};
+
 void RainGenerator::RainPercentile(){
     std::vector<double> R_prctiles;
     std::vector<std::vector<double> > R_temp;
@@ -526,10 +538,6 @@ std::vector<Matrix> RainGenerator::ConvertRainValues(std::vector<Matrix> R_60){
         }   
     }
     return R_01;
-};
-
-std::vector<std::vector<double> > RainGenerator::GetSimulatedValues(int i){
-    return R_01_simulated[i].v;
 };
 
 }
