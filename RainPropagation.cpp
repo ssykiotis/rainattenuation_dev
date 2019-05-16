@@ -3,18 +3,18 @@
 
 namespace rainprop{
 
-RainPropagation::RainPropagation(double f,double d,std::vector<double> Rprctl){
-    this->f = f;
-    this->d = d;
+RainPropagation::RainPropagation(Control controlSettings,std::vector<double> Rprctl){
+    this->f = controlSettings.GetFrequency();
+    this->d = controlSettings.GetDistance();
     this->theta = 0;
     this->tau = 0;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
     this->effpl = EffectivePathLength(Rprctl);    
 };
-RainPropagation::RainPropagation(double f,double d,double theta,double tau,std::vector<double> Rprctl){
-    this->f = f;
-    this->d = d;
+RainPropagation::RainPropagation(Control controlSettings,std::vector<double> Rprctl,double theta,double tau){
+    this->f = controlSettings.GetFrequency();
+    this->d = controlSettings.GetDistance();
     this->theta = theta;
     this->tau = tau;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
@@ -124,6 +124,22 @@ std::vector<double> RainPropagation::EffectivePathLength(std::vector<double> Rpr
     return r;
 };
 
+double RainPropagation::TotalRainAtt(double R,int i){
+    double gamma_r = SpecAtt(R);
+    double r = this->effpl[i];
+    double dist = this->d;
+    return gamma_r*dist*r;
+};
+
+std::vector<std::vector<double> > RainPropagation::TotalRainAtt(std::vector<std::vector<double>> R_01,int month){
+    std::vector<std::vector<double>> TotalAtt = R_01; 
+    for (int i = 0; i < R_01.size(); i++){
+        for(int j= 0;j<R_01[i].size();j++){
+            TotalAtt[i][j]=SpecAtt(R_01[i][j])*this->d*effpl[month];
+        }
+    }
+    return TotalAtt;
+};
 
 
 

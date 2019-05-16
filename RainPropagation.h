@@ -3,13 +3,14 @@
 
 
 #include "structs.h"
+#include "control.h"
 
 namespace rainprop{
 class RainPropagation{
 
 public:
-    RainPropagation(double f,double d,std::vector<double> Rprctl);
-    RainPropagation(double f,double d,double theta,double tau,std::vector<double> Rprctl);    
+    RainPropagation(Control controlSettings,std::vector<double> Rprctl); 
+    RainPropagation(Control controlSettings,std::vector<double> Rprctl,double theta,double tau);  
 
     SpecRainAttCoeff SpecRainAttCoeffs();
     RainAttCoeff RainAttCoeffs();
@@ -19,7 +20,8 @@ public:
 
     std::vector<double> EffectivePathLength(std::vector<double> Rprctl);
 
-    double TotalRainAtt();
+    double TotalRainAtt(double R,int month);
+    std::vector<std::vector<double> > TotalRainAtt(std::vector<std::vector<double> >,int i);
     
     // std::vector<Matrix> TotalRainAtt();
 

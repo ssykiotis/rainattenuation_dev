@@ -9,7 +9,6 @@ class Control{
     
 public:
     Control();
-    Control(double lat,double lon);
     Control(double lat,double lon, double f, double dist, int states);
 
     void SetLocation(double lon, double lat);
@@ -35,9 +34,7 @@ private:
     Cords loc;                                        
     double f;                                    
     double dist;                                    
-    
-    double FSMC_states;   
-
+    double FSMC_states;
 };
 }
 

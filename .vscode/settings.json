@@ -60,7 +60,10 @@
         "memory": "cpp",
         "mutex": "cpp",
         "scoped_allocator": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "codecvt": "cpp",
+        "cuchar": "cpp",
+        "shared_mutex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

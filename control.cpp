@@ -13,17 +13,6 @@ namespace rainprop{
         SetMonthhours();
     };
 
-    Control::Control(double lat,double lon){
-        this->loc.lat = lat;
-        this->loc.lon = lon;
-        f = 0;
-        dist = 0;
-        FSMC_states = 0;
-        SetMonthdays();
-        SetMonthhours();
-        ComputeMonthhoursCumSum();
-    };
-
     Control::Control(double lat,double lon, double f, double dist, int states){
         this->loc.lat = lat;
         this->loc.lon = lon;
