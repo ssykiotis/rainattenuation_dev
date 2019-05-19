@@ -3,23 +3,43 @@
 
 namespace rainprop{
 
-RainPropagation::RainPropagation(Control controlSettings,std::vector<double> Rprctl){
+ RainPropagation::RainPropagation(Control controlSettings){
     this->f = controlSettings.GetFrequency();
     this->d = controlSettings.GetDistance();
     this->theta = 0;
     this->tau = 0;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
-    this->effpl = EffectivePathLength(Rprctl);    
-};
-RainPropagation::RainPropagation(Control controlSettings,std::vector<double> Rprctl,double theta,double tau){
+};   
+
+ RainPropagation::RainPropagation(Control controlSettings,double theta, double tau){
     this->f = controlSettings.GetFrequency();
     this->d = controlSettings.GetDistance();
     this->theta = theta;
     this->tau = tau;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
     this->GammaCoeffs = RainAttCoeffs();
-    this->effpl = EffectivePathLength(Rprctl);
+};   
+
+
+RainPropagation::RainPropagation(Control controlSettings,std::vector<std::vector<double>> R_01){
+    this->f = controlSettings.GetFrequency();
+    this->d = controlSettings.GetDistance();
+    this->theta = 0;
+    this->tau = 0;
+    this->R_01 = Reshape(R_01);
+    this->SpecGammaCoeffs = SpecRainAttCoeffs();
+    this->GammaCoeffs = RainAttCoeffs();
+};
+
+RainPropagation::RainPropagation(Control controlSettings,std::vector<std::vector<double>> R_01,double theta,double tau){
+    this->f = controlSettings.GetFrequency();
+    this->d = controlSettings.GetDistance();
+    this->theta = theta;
+    this->tau = tau;
+    this->R_01 = Reshape(R_01);
+    this->SpecGammaCoeffs = SpecRainAttCoeffs();
+    this->GammaCoeffs = RainAttCoeffs();
 };
 
 SpecRainAttCoeff RainPropagation::SpecRainAttCoeffs(){
@@ -98,49 +118,64 @@ double RainPropagation::SpecAtt(double R){
     return GammaCoeffs.k*pow(R,GammaCoeffs.a);
 };
 
-std::vector<std::vector<double> > RainPropagation::SpecAtt(std::vector<std::vector<double>> R){
-    std::vector<std::vector<double> > gamma_R = R;
+std::vector<double> RainPropagation::SpecAtt(std::vector<double> R){
+    std::vector<double> gamma_R = R;
 
     for (int i = 0; i < R.size(); i++){
-        for (int j = 0; j < R[i].size(); j++){
-            gamma_R[i][j]= SpecAtt(R[i][j] ) ;
-        }
+         gamma_R[i]= SpecAtt(R[i]);
     }
     return gamma_R;
 };
 
-std::vector<double> RainPropagation::EffectivePathLength(std::vector<double> Rprctl){
+std::vector<double> RainPropagation::EffectivePathLength(){
     double f_ghz = f/1e09;
     std::vector<double> r;
     double r_month=0;
     double term1;
     double term2;
-    for (int i = 0; i < Rprctl.size(); i++){
-        term1 = 0.477*pow(d,0.633)*pow(Rprctl[i],0.073*GammaCoeffs.a)*pow(f_ghz,0.123);
-        term2 = 10.579*(1-exp(-0.024*d));
-        r_month = 1/(term1-term2); 
-        r.push_back(r_month);  
+    for (int i = 0; i < R_01.size(); i++){
+            term1 = 0.477*pow(d,0.633)*pow(R_01[i],0.073*GammaCoeffs.a)*pow(f_ghz,0.123);
+            term2 = 10.579*(1-exp(-0.024*d));
+            r_month = 1/(term1-term2); 
+            r.push_back(r_month);  
     }
     return r;
 };
 
-double RainPropagation::TotalRainAtt(double R,int i){
-    double gamma_r = SpecAtt(R);
-    double r = this->effpl[i];
-    double dist = this->d;
-    return gamma_r*dist*r;
-};
 
-std::vector<std::vector<double> > RainPropagation::TotalRainAtt(std::vector<std::vector<double>> R_01,int month){
-    std::vector<std::vector<double>> TotalAtt = R_01; 
+std::vector<double> RainPropagation::TotalRainAtt(){
+    std::vector<double> A;
+    double att;
+    double g;
+    double r;
     for (int i = 0; i < R_01.size(); i++){
-        for(int j= 0;j<R_01[i].size();j++){
-            TotalAtt[i][j]=SpecAtt(R_01[i][j])*this->d*effpl[month];
-        }
+        g = gamma_r[i];
+        r = effpl[i];
+        att = g*r*d;
+        A.push_back(att);
     }
-    return TotalAtt;
+    return A;
 };
 
 
+void RainPropagation::SetRainValues(std::vector<std::vector<double> > R_01){
+    this->R_01=Reshape(R_01);
+};
+
+std::vector<double> RainPropagation::Reshape(std::vector<std::vector<double> > V){
+    std::vector<double> v;
+    for (int i = 0; i < V.size(); i++){
+        for (int j = 0; j < V[i].size(); j++){
+            v.push_back(V[i][j]);
+        } 
+    }
+    return v;
+};
+
+void RainPropagation::Run(){
+    this-> gamma_r = SpecAtt(this->R_01);
+    this->effpl = EffectivePathLength();
+    this->totalatt = TotalRainAtt();
+};
 
 }

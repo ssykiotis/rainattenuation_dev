@@ -168,7 +168,6 @@ void RainGenerator::RainValues(){
 };
 
 void RainGenerator::SplitInRainEvents(){
-
     int j;
     int months = R_01.size();
     int hours;
@@ -212,7 +211,6 @@ void RainGenerator::SplitInRainEvents(){
 };
 
 void RainGenerator::SimulateRainYear(){
-
     std::vector<Matrix> SimulatedValues(12);
     int months = SimulatedValues.size();
     int hours;
@@ -295,40 +293,7 @@ void RainGenerator::Run(){
     ITUR837_calculation();
     RainValues();
     SplitInRainEvents();
-    RainPercentile();
     SimulateRainYear();
-};
-
-void RainGenerator::RainPercentile(){
-    std::vector<double> R_prctiles;
-    std::vector<std::vector<double> > R_temp;
-    std::vector<double> R_1d;
-    
-    double r;
-    double k;
-    double y;
-
-    for (int i = 0; i < R_01.size(); i++){
-        R_temp = R_01[i].v;
-        for (int  j = 0; j < R_01[i].v.size(); j++){
-            for (int k = 0; k < 11; k++){
-                R_1d.push_back(R_temp[j][k]);
-            }
-        }
-        //calculate the percentile
-        std::sort(R_1d.begin(),R_1d.end());
-        r = 0.9999*R_1d.size();
-        k = floor(r+0.5);
-        r-=k;
-        y = (0.5-r)*R_1d[k-1]+(0.5+r)*R_1d[k];
-        R_prctiles.push_back(y);
-        R_1d.clear();
-    } 
-    this->R_001 = R_prctiles;
-};
-
-std::vector<double> RainGenerator::GetR_001(){
-    return this->R_001;
 };
 
 std::vector<Koppen> RainGenerator::ReadKoppen(){
@@ -362,8 +327,7 @@ std::vector<double> RainGenerator::ReadCoordinates(const char *filename){
     std::ifstream ip(filename);
     std::string readval;
 
-    while (ip.good())
-    {
+    while (ip.good()){
         getline(ip, readval, '\n');
         v.push_back(atof(readval.c_str()));
     }
