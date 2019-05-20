@@ -28,7 +28,10 @@ public:
 
     void CalculateRainAttenuation();
     std::vector<double> Reshape(std::vector<std::vector<double> > V);
-    double GetNextValue();
+
+    std::vector<double> GetGammaR();
+    std::vector<double> GetEffpl();
+    std::vector<double> GetTotalAtt();
 
     void Run();
 

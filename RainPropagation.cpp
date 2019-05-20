@@ -172,6 +172,18 @@ std::vector<double> RainPropagation::Reshape(std::vector<std::vector<double> > V
     return v;
 };
 
+
+std::vector<double> RainPropagation::GetGammaR(){
+    return this->gamma_r;
+};
+std::vector<double> RainPropagation::GetEffpl(){
+    return this->effpl;
+};
+std::vector<double> RainPropagation::GetTotalAtt(){
+    return this->totalatt;
+};
+
+
 void RainPropagation::Run(){
     this-> gamma_r = SpecAtt(this->R_01);
     this->effpl = EffectivePathLength();

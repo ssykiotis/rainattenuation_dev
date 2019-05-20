@@ -17,40 +17,40 @@ rainprop::RainGenerator rainGenerator(controlSettings);
 rainGenerator.Run();
 
 rainprop::RainPropagation RainProp(controlSettings,rainGenerator.GetSimulatedValues(0),0,0);
-RainProp.Run();
-
-
-
-
+// RainProp.Run();
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// std::vector<double > totalatt;
-// std::vector<std::vector<double> > specatts;
+std::vector<double> gamma_r;
+std::vector<double> effpl;
+std::vector<double> totalatt;
+std::vector<double> rainvalues;
 
-// double max = 0;
-// std::ofstream outFile("att.csv");
-// std::ofstream outFile2("rainvalues.csv");
-// std::ofstream outFile3("specatts.csv");
-// for (int k = 0; k < 12; k++)
-// {
-//     std::cout << k <<std::endl;
-//     totalatt.clear();
-//     totalatt = RainProp.TotalRainAtt(rainGenerator.GetSimulatedValues(k),k);
-//     specatts = RainProp.SpecAtt(rainGenerator.GetSimulatedValues(k));
-// for (int i = 0; i < totalatt.size(); i++)
-// {
-//     for (int j = 0; j < totalatt[i].size(); j++)
-//     {
-//         outFile  << totalatt[i][j] << " "; 
-//         outFile2 << rainGenerator.GetSimulatedValues(k)[i][j]<<" ";
-//         outFile3 << specatts[i][j] << " ";
-//     }
-//     outFile  << "\n";   
-//     outFile2 << "\n";
-//     outFile3 << "\n";
-// }
-// }
+std::ofstream outFile("specatts.csv");
+std::ofstream outFile2("effpl.csv");
+std::ofstream outFile3("att.csv");
+std::ofstream outFile4("rainvalues.csv");
+for (int k = 0; k < 12; k++)
+{
+    std::cout << k <<std::endl;
+    RainProp.SetRainValues(rainGenerator.GetSimulatedValues(k));
+    RainProp.Run();
+
+    rainvalues = RainProp.Reshape(rainGenerator.GetSimulatedValues(k));
+    gamma_r = RainProp.GetGammaR();
+    effpl = RainProp.GetEffpl();
+    totalatt = RainProp.GetTotalAtt();
+
+
+    for (int i = 0; i < totalatt.size(); i++)
+    {
+    outFile  << totalatt[i] << "\n"; 
+    outFile2 << effpl[i]    << "\n";
+    outFile3 << totalatt[i] << "\n";
+    outFile4 << rainvalues[i] << "\n";
+
+    }
+}
 
 return 0;
 }
