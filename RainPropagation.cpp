@@ -134,10 +134,15 @@ std::vector<double> RainPropagation::EffectivePathLength(){
     double term1;
     double term2;
     for (int i = 0; i < R_01.size(); i++){
+        if (R_01[i]==0){
+            r.push_back(0);
+        }
+        else{
             term1 = 0.477*pow(d,0.633)*pow(R_01[i],0.073*GammaCoeffs.a)*pow(f_ghz,0.123);
             term2 = 10.579*(1-exp(-0.024*d));
             r_month = 1/(term1-term2); 
             r.push_back(r_month);  
+        }
     }
     return r;
 };
@@ -151,7 +156,7 @@ std::vector<double> RainPropagation::TotalRainAtt(){
     for (int i = 0; i < R_01.size(); i++){
         g = gamma_r[i];
         r = effpl[i];
-        att = g*r*d;
+        att = g*r*d/1000;
         A.push_back(att);
     }
     return A;
