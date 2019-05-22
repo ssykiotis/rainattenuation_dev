@@ -44,7 +44,7 @@ for (int k = 0; k < 12; k++)
 
     for (int i = 0; i < totalatt.size(); i++)
     {
-    outFile  << totalatt[i] << "\n"; 
+    outFile  << gamma_r[i] << "\n"; 
     outFile2 << effpl[i]    << "\n";
     outFile3 << totalatt[i] << "\n";
     outFile4 << rainvalues[i] << "\n";
