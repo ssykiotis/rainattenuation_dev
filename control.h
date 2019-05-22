@@ -9,7 +9,7 @@ class Control{
     
 public:
     Control();
-    Control(double lat,double lon, double f, double dist, int states);
+    Control(double lat,double lon, double f, double dist);
 
     void SetLocation(double lon, double lat);
     void SetFrequency(double freq);
@@ -19,7 +19,6 @@ public:
     Cords GetLocation();
     double GetFrequency();
     double GetDistance();
-    int GetFSMCStates();
 
     std::vector<int> monthdays;
     std::vector<int> monthhours;
@@ -34,7 +33,6 @@ private:
     Cords loc;                                        
     double f;                                    
     double dist;                                    
-    double FSMC_states;
 };
 }
 

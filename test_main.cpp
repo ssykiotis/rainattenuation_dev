@@ -11,7 +11,7 @@
 
 int main(){
 
-rainprop::Control controlSettings(52.52,13.4049,60e09,1000,7);
+rainprop::Control controlSettings(52.52,13.4049,60e09,1000);
 
 rainprop::RainGenerator rainGenerator(controlSettings);
 rainGenerator.Run();
@@ -48,7 +48,6 @@ for (int k = 0; k < 12; k++)
     outFile2 << effpl[i]    << "\n";
     outFile3 << totalatt[i] << "\n";
     outFile4 << rainvalues[i] << "\n";
-
     }
 }
 

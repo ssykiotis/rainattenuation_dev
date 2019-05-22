@@ -8,17 +8,15 @@ namespace rainprop{
         loc.lon = 0;
         f = 0;
         dist = 0;
-        FSMC_states = 0;
         SetMonthdays();
         SetMonthhours();
     };
 
-    Control::Control(double lat,double lon, double f, double dist, int states){
+    Control::Control(double lat,double lon, double f, double dist){
         this->loc.lat = lat;
         this->loc.lon = lon;
         this->f = f;
         this->dist = dist;
-        this->FSMC_states = states;
         SetMonthdays();
         SetMonthhours();
         ComputeMonthhoursCumSum();
@@ -38,10 +36,6 @@ namespace rainprop{
         this->dist = dist;
     };
 
-    void Control::SetFSMCStates(int states){
-        this->FSMC_states = states;
-    };
-
     Cords Control::GetLocation(){
         return this->loc;
     };
@@ -54,9 +48,6 @@ namespace rainprop{
         return this->dist;
     };
 
-    int Control::GetFSMCStates(){
-        return this->FSMC_states;
-    };
 
     void Control::SetMonthdays(){
         monthdays.push_back(31);
