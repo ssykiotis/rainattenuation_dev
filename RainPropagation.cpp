@@ -4,8 +4,9 @@
 namespace rainprop{
 
  RainPropagation::RainPropagation(Control controlSettings){
-    this->f = controlSettings.GetFrequency();
-    this->d = controlSettings.GetDistance();
+    this->currval = -1;
+    this->f = controlSettings.GetFrequency()/1e09;
+    this->d = controlSettings.GetDistance()/1e03;
     this->theta = 0;
     this->tau = 0;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
@@ -13,8 +14,9 @@ namespace rainprop{
 };   
 
  RainPropagation::RainPropagation(Control controlSettings,double theta, double tau){
-    this->f = controlSettings.GetFrequency();
-    this->d = controlSettings.GetDistance();
+    this->currval = -1; 
+    this->f = controlSettings.GetFrequency()/1e09;
+    this->d = controlSettings.GetDistance()/1e03;
     this->theta = theta;
     this->tau = tau;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
@@ -23,8 +25,9 @@ namespace rainprop{
 
 
 RainPropagation::RainPropagation(Control controlSettings,std::vector<std::vector<double>> R_01){
-    this->f = controlSettings.GetFrequency();
-    this->d = controlSettings.GetDistance();
+    this->currval = -1;
+    this->f = controlSettings.GetFrequency()/1e09;
+    this->d = controlSettings.GetDistance()/1e03;
     this->theta = 0;
     this->tau = 0;
     this->R_01 = Reshape(R_01);
@@ -33,8 +36,9 @@ RainPropagation::RainPropagation(Control controlSettings,std::vector<std::vector
 };
 
 RainPropagation::RainPropagation(Control controlSettings,std::vector<std::vector<double>> R_01,double theta,double tau){
-    this->f = controlSettings.GetFrequency();
-    this->d = controlSettings.GetDistance();
+    this->currval = -1;
+    this->f = controlSettings.GetFrequency()/1e09;
+    this->d = controlSettings.GetDistance()/1e03;
     this->theta = theta;
     this->tau = tau;
     this->R_01 = Reshape(R_01);
@@ -81,7 +85,7 @@ SpecRainAttCoeff RainPropagation::SpecRainAttCoeffs(){
     double a_v_m = -0.053739;
     double a_v_c = 0.83433;
 
-    double log_f =log10(f/1e09);
+    double log_f =log10(f);
     SpecRainAttCoeff gammacoeffs {0,0,0,0};
 
     for (int i = 0; i < k_h_table.size(); i++){
@@ -128,7 +132,7 @@ std::vector<double> RainPropagation::SpecAtt(std::vector<double> R){
 };
 
 std::vector<double> RainPropagation::EffectivePathLength(){
-    double f_ghz = f/1e09;
+    double f_ghz = f;
     std::vector<double> r;
     double r_month=0;
     double term1;
@@ -156,7 +160,7 @@ std::vector<double> RainPropagation::TotalRainAtt(){
     for (int i = 0; i < R_01.size(); i++){
         g = gamma_r[i];
         r = effpl[i];
-        att = g*r*d/1000;
+        att = g*r*d;
         A.push_back(att);
     }
     return A;
@@ -186,6 +190,17 @@ std::vector<double> RainPropagation::GetEffpl(){
 };
 std::vector<double> RainPropagation::GetTotalAtt(){
     return this->totalatt;
+};
+
+double RainPropagation::GetNextValue(){
+    if (this->currval<totalatt.size()-1){
+        this->currval++;
+        return totalatt[this->currval];
+    }
+    else{
+        return -1;
+    }
+    
 };
 
 

@@ -33,6 +33,8 @@ public:
     std::vector<double> GetEffpl();
     std::vector<double> GetTotalAtt();
 
+    double GetNextValue();
+
     void Run();
 
 private:
@@ -49,6 +51,7 @@ private:
     std::vector<double> gamma_r;
     std::vector<double> effpl;
     std::vector<double> totalatt;
+    int currval;
 
 };
 }

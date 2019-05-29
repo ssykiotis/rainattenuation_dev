@@ -17,9 +17,19 @@ rainprop::RainGenerator rainGenerator(controlSettings);
 rainGenerator.Run();
 
 rainprop::RainPropagation RainProp(controlSettings,rainGenerator.GetSimulatedValues(0),0,0);
-// RainProp.Run();
+RainProp.Run();
 
 //////////////////////////////////////////////////////////////////////////////////
+
+// double val=0;
+
+// for (int i = 0; i < 200000; i++)
+// {
+//     val = RainProp.GetNextValue(); 
+//     if (val!=-1){
+//       std::cout << val << std::endl;
+//     }    
+// }
 
 std::vector<double> gamma_r;
 std::vector<double> effpl;
