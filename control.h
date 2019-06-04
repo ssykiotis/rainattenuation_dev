@@ -3,22 +3,16 @@
 
 #include "structs.h"
 
-namespace rainprop{
+namespace ns3{
 
 class Control{
     
 public:
     Control();
-    Control(double lat,double lon, double f, double dist);
+    Control(double lat,double lon);
 
     void SetLocation(double lon, double lat);
-    void SetFrequency(double freq);
-    void SetDistance(double dist);
-    void SetFSMCStates(int states);
-
     Cords GetLocation();
-    double GetFrequency();
-    double GetDistance();
 
     std::vector<int> monthdays;
     std::vector<int> monthhours;
@@ -26,13 +20,11 @@ public:
 
 private:
     //internal functions used by the constructor
-    void SetMonthdays();
-    void SetMonthhours();
+   
+    void SetHelperVectors();
     void ComputeMonthhoursCumSum();
-
     Cords loc;                                        
-    double f;                                    
-    double dist;                                    
+                                 
 };
 }
 

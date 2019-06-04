@@ -1,85 +1,47 @@
 
 #include "control.h"
 
-namespace rainprop{
+namespace ns3{
 
-    Control::Control(){
+    Control::Control()
+    {
         loc.lat = 0;
         loc.lon = 0;
-        f = 0;
-        dist = 0;
-        SetMonthdays();
-        SetMonthhours();
+        SetHelperVectors();
     };
 
-    Control::Control(double lat,double lon, double f, double dist){
+    Control::Control(double lat,double lon)
+    {
         this->loc.lat = lat;
         this->loc.lon = lon;
-        this->f = f;
-        this->dist = dist;
-        SetMonthdays();
-        SetMonthhours();
-        ComputeMonthhoursCumSum();
+        SetHelperVectors();
     };
 
 
-    void Control::SetLocation(double lat, double lon){
+    void Control::SetLocation(double lat, double lon)
+    {
        Cords loc = {lat,lon};
        this-> loc = loc;
     };
 
-    void Control::SetFrequency(double freq){
-        this->f = freq;
-    };
 
-    void Control::SetDistance(double dist){
-        this->dist = dist;
-    };
-
-    Cords Control::GetLocation(){
+    Cords Control::GetLocation()
+    {
         return this->loc;
     };
 
-    double Control::GetFrequency(){
-        return this->f;
+
+    void Control::SetHelperVectors()
+    {
+        monthdays  = {31 , 28 , 31 , 30 , 31 , 30  , 31 , 31  , 30 , 31 , 30 , 31 };
+        monthhours = {744, 672, 744, 720, 744, 720 , 744, 744 , 720, 744, 720, 744};
+        ComputeMonthhoursCumSum();
     };
 
-    double Control::GetDistance(){
-        return this->dist;
-    };
 
 
-    void Control::SetMonthdays(){
-        monthdays.push_back(31);
-        monthdays.push_back(28);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-        monthdays.push_back(30);
-        monthdays.push_back(31);
-    };
-
-    void Control::SetMonthhours(){
-        monthhours.push_back(744);
-        monthhours.push_back(672);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-        monthhours.push_back(720);
-        monthhours.push_back(744);
-    };
-
-    void Control::ComputeMonthhoursCumSum(){
+    void Control::ComputeMonthhoursCumSum()
+    {
         std::vector<int> v_cum;
         v_cum.push_back(0);
 

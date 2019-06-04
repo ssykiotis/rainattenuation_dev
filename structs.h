@@ -5,7 +5,7 @@
 #include <vector>
 
 
-namespace rainprop{
+namespace ns3{
 
     struct Cords{
         double lat;
