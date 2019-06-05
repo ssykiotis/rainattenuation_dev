@@ -4,7 +4,7 @@
 #include "structs.h"
 #include "control.h"
 #include "RainGenerator.h"
-// #include "RainPropagation.h"
+#include "RainAttenuation.h"
 
 int main(){
 
@@ -14,11 +14,7 @@ ns3::RainGenerator rainGenerator(controlSettings);
 rainGenerator.Run();
 std::vector<double> test;
 
-for (int i = 0; i < 12; i++)
-{
-    test = rainGenerator.GetRainValues(i);
-    std::cout << test.size() << std::endl;
-}
+
 
 // ns3::RainPropagation RainProp(controlSettings,rainGenerator.GetSimulatedValues(0),0,0);
 // RainProp.Run();

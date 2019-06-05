@@ -1,18 +1,15 @@
-#ifndef RAINPROPAGATION_H
-#define RAINPROPAGATION_H
+#ifndef RAINATTENUATION_H
+#define RAINATTENUATION_H
 
 
 #include "structs.h"
-#include "control.h"
 
-namespace rainprop{
-class RainPropagation{
+namespace ns3{
+class RainAttenuation{
 
 public:
-    RainPropagation(Control controlSettings);
-    RainPropagation(Control controlSettings,double theta, double tau);
-    RainPropagation(Control controlSettings,std::vector<std::vector<double> > R_01); 
-    RainPropagation(Control controlSettings,std::vector<std::vector<double> > R_01,double theta,double tau);  
+    RainAttenuation(double f, double d,std::vector<double> R, double prctile);
+    RainAttenuation(double f, double d, double theta, double tau,std::vector<double> R, double prctile);
 
     SpecRainAttCoeff SpecRainAttCoeffs();
     RainAttCoeff RainAttCoeffs();
@@ -51,7 +48,7 @@ private:
     std::vector<double> gamma_r;
     std::vector<double> effpl;
     std::vector<double> totalatt;
-    int currval;
+    int curridx;
 
 };
 }
