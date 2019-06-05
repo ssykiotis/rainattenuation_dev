@@ -320,7 +320,7 @@ void RainGenerator::SimulateRainYear()
 
 std::vector<double> RainGenerator::GetRainValues(int i)
 {
-  std::vector<std::vector<double> > R = R_01_simulated[i].v;
+  std::vector<std::vector<double> > R = R_01_simulated[i-1].v;
   std::vector<double> R_vec;
   for (int i = 0; i < R.size(); i++)
   {

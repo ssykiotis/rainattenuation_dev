@@ -15,43 +15,28 @@ public:
     RainAttCoeff RainAttCoeffs();
 
     double SpecAtt(double R);
-    std::vector<double> SpecAtt(std::vector<double> R);
+    double EffectivePathLength(double R);
+    double CalcRainAtt();
 
-    std::vector<double> EffectivePathLength();
+    void CalcRainPrctile();
+        
+    double R_prctile;    
+    std::vector<double> R_vec;
 
-    std::vector<double> TotalRainAtt();
-    
-    void SetRainValues(std::vector<std::vector<double>>R_01);
-
-    void CalculateRainAttenuation();
-    std::vector<double> Reshape(std::vector<std::vector<double> > V);
-
-    std::vector<double> GetGammaR();
-    std::vector<double> GetEffpl();
-    std::vector<double> GetTotalAtt();
-
-    double GetNextValue();
-
-    void Run();
 
 private:
 
     double f;
     double d;
-    std::vector<double> R_01;
+    double prctile;
 
     double theta;
     double tau;
     SpecRainAttCoeff SpecGammaCoeffs;
     RainAttCoeff GammaCoeffs;
 
-    std::vector<double> gamma_r;
-    std::vector<double> effpl;
-    std::vector<double> totalatt;
-    int curridx;
-
 };
-}
 
+}
 
 #endif

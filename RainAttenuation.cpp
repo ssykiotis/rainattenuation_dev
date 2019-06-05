@@ -1,54 +1,36 @@
 #include "RainAttenuation.h"
 #include <math.h> 
+#include <bits/stdc++.h>  
+
 
 namespace ns3{
 
-RainAttenuation(double f, double d,std::vector<double> R, double prctile)
+RainAttenuation::RainAttenuation(double f, double d, std::vector<double> R, double prctile)
 {
-    
-};
-
-RainAttenuation(double f, double d, double theta, double tau,std::vector<double> R, double prctile)
-{
-    
-};
-
-
-
- RainAttenuation::RainAttenuation(Control controlSettings,double theta, double tau){
-    this->curridx = 0; 
-    this->f = controlSettings.GetFrequency()/1e09;
-    this->d = controlSettings.GetDistance()/1e03;
-    this->theta = theta;
-    this->tau = tau;
-    this->SpecGammaCoeffs = SpecRainAttCoeffs();
-    this->GammaCoeffs = RainAttCoeffs();
-};   
-
-
-RainAttenuation::RainAttenuation(Control controlSettings,std::vector<std::vector<double>> R_01){
-    this->curridx = 0;
-    this->f = controlSettings.GetFrequency()/1e09;
-    this->d = controlSettings.GetDistance()/1e03;
+    this->f = f/1e09;
+    this->d = d/1e03;
     this->theta = 0;
     this->tau = 0;
-    this->R_01 = Reshape(R_01);
+    this->prctile = prctile/100;
+    this->R_vec = R;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
-    this->GammaCoeffs = RainAttCoeffs();
+    this->GammaCoeffs     = RainAttCoeffs();
+    CalcRainPrctile();
 };
 
-RainAttenuation::RainAttenuation(Control controlSettings,std::vector<std::vector<double>> R_01,double theta,double tau){
-    this->curridx = 0;
-    this->f = controlSettings.GetFrequency()/1e09;
-    this->d = controlSettings.GetDistance()/1e03;
+RainAttenuation::RainAttenuation(double f, double d, double theta, double tau,std::vector<double> R, double prctile)
+{
     this->theta = theta;
     this->tau = tau;
-    this->R_01 = Reshape(R_01);
+    this->prctile = prctile; 
+    this->R_vec = R;
     this->SpecGammaCoeffs = SpecRainAttCoeffs();
-    this->GammaCoeffs = RainAttCoeffs();
+    this->GammaCoeffs = RainAttCoeffs(); 
 };
 
-SpecRainAttCoeff RainAttenuation::SpecRainAttCoeffs(){
+
+SpecRainAttCoeff RainAttenuation::SpecRainAttCoeffs()
+{
     std::vector <std::vector<double> > k_h_table{  {-5.33980,-0.10008, 1.13098},
                                                    {-0.35351, 1.26970, 0.45400},
                                                    {-0.23789, 0.86036, 0.15354},
@@ -90,14 +72,16 @@ SpecRainAttCoeff RainAttenuation::SpecRainAttCoeffs(){
     double log_f =log10(f);
     SpecRainAttCoeff gammacoeffs {0,0,0,0};
 
-    for (int i = 0; i < k_h_table.size(); i++){
+    for (int i = 0; i < k_h_table.size(); i++)
+    {
         gammacoeffs.k_h += k_h_table[i][0]*exp(-pow((log_f-k_h_table[i][1])/k_h_table[i][2],2));
         gammacoeffs.k_v += k_v_table[i][0]*exp(-pow((log_f-k_v_table[i][1])/k_v_table[i][2],2)); 
     }
     gammacoeffs.k_h+=log_f*k_h_m+k_h_c;
     gammacoeffs.k_v+=log_f*k_v_m+k_v_c;
 
-    for (int i = 0; i < a_h_table.size(); i++){
+    for (int i = 0; i < a_h_table.size(); i++)
+    {
         gammacoeffs.a_h += a_h_table[i][0]*exp(-pow((log_f-a_h_table[i][1])/a_h_table[i][2],2));
         gammacoeffs.a_v += a_v_table[i][0]*exp(-pow((log_f-a_v_table[i][1])/a_v_table[i][2],2)); 
     }
@@ -107,12 +91,10 @@ SpecRainAttCoeff RainAttenuation::SpecRainAttCoeffs(){
     gammacoeffs.k_v = pow(10,gammacoeffs.k_v);
 
     return gammacoeffs;
-
-    
-
 };
 
-RainAttCoeff RainAttenuation::RainAttCoeffs(){
+RainAttCoeff RainAttenuation::RainAttCoeffs()
+{
     RainAttCoeff attcoeffs;
     attcoeffs.k = (SpecGammaCoeffs.k_h+SpecGammaCoeffs.k_v+(SpecGammaCoeffs.k_h-SpecGammaCoeffs.k_v)*pow(cos(theta),2)*cos(2*tau))/2;
     attcoeffs.a = (SpecGammaCoeffs.k_h*SpecGammaCoeffs.a_h+SpecGammaCoeffs.k_v*SpecGammaCoeffs.a_v
@@ -120,98 +102,57 @@ RainAttCoeff RainAttenuation::RainAttCoeffs(){
     return attcoeffs;
 };
 
-double RainAttenuation::SpecAtt(double R){
+double RainAttenuation::SpecAtt(double R)
+{
     return GammaCoeffs.k*pow(R,GammaCoeffs.a);
 };
 
-std::vector<double> RainAttenuation::SpecAtt(std::vector<double> R){
-    std::vector<double> gamma_R = R;
 
-    for (int i = 0; i < R.size(); i++){
-         gamma_R[i]= SpecAtt(R[i]);
-    }
-    return gamma_R;
-};
+double RainAttenuation::EffectivePathLength(double R)
+{
 
-std::vector<double> RainAttenuation::EffectivePathLength(){
-    double f_ghz = f;
-    std::vector<double> r;
-    double r_month=0;
+    double effpl;
     double term1;
     double term2;
-    for (int i = 0; i < R_01.size(); i++){
-        if (R_01[i]==0){
-            r.push_back(0);
+
+        if (R==0){
+            effpl=0;
         }
         else{
-            term1 = 0.477*pow(d,0.633)*pow(R_01[i],0.073*GammaCoeffs.a)*pow(f_ghz,0.123);
+            term1 = 0.477*pow(d,0.633)*pow(R,0.073*GammaCoeffs.a)*pow(f,0.123);
             term2 = 10.579*(1-exp(-0.024*d));
-            r_month = 1/(term1-term2); 
-            r.push_back(r_month);  
+            effpl = 1/(term1-term2);    
         }
-    }
-    return r;
+
+        if (effpl>2.5)
+        {
+            effpl=2.5;
+        }
+
+        return effpl;
 };
 
-
-std::vector<double> RainAttenuation::TotalRainAtt(){
-    std::vector<double> A;
-    double att;
-    double g;
-    double r;
-    for (int i = 0; i < R_01.size(); i++){
-        g = gamma_r[i];
-        r = effpl[i];
-        att = g*r*d;
-        A.push_back(att);
-    }
-    return A;
+double RainAttenuation::CalcRainAtt()
+{
+    double gamma_r = SpecAtt(R_prctile);
+    double effpl = EffectivePathLength(R_prctile);
+    return gamma_r*effpl*d;
 };
 
-
-void RainAttenuation::SetRainValues(std::vector<std::vector<double> > R_01){
-    this->R_01=Reshape(R_01);
-};
-
-std::vector<double> RainAttenuation::Reshape(std::vector<std::vector<double> > V){
-    std::vector<double> v;
-    for (int i = 0; i < V.size(); i++){
-        for (int j = 0; j < V[i].size(); j++){
-            v.push_back(V[i][j]);
-        } 
-    }
-    return v;
-};
-
-
-std::vector<double> RainAttenuation::GetGammaR(){
-    return this->gamma_r;
-};
-std::vector<double> RainAttenuation::GetEffpl(){
-    return this->effpl;
-};
-std::vector<double> RainAttenuation::GetTotalAtt(){
-    return this->totalatt;
-};
-
-double RainAttenuation::GetNextValue(){
-    int idx = this->curridx;
-    int size = totalatt.size()-1;
-    if (idx<size){
-        this->curridx++;
-        return totalatt[idx];
-    }
-    else{
-        return -1;
-    }
+void RainAttenuation::CalcRainPrctile(){
     
-};
+    double r;
+    double k;
+    double y;
 
+    std::sort(R_vec.begin(),R_vec.end());
+    r = prctile*R_vec.size();
+    k = floor(r+0.5);
+    r-=k;
+    y = (0.5-r)*R_vec[k-1]+(0.5+r)*R_vec[k-1];
 
-void RainAttenuation::Run(){
-    this-> gamma_r = SpecAtt(this->R_01);
-    this->effpl = EffectivePathLength();
-    this->totalatt = TotalRainAtt();
+    R_prctile = y;    
 };
 
 }
+
