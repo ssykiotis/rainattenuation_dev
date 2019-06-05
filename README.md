@@ -7,6 +7,6 @@ Classes:
   2) RainSimulator: class that contains simulated rain rate values and the corresponding rain attenuation for a year.
   
   
-Progress: 10/23  functions implemented : ~44% done
+Progress: : ~95% done
 
 g++ -g -std=c++11 -w test_main.cpp RainPropagation.cpp RainGenerator.cpp control.cpp -o test_main
