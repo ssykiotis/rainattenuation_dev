@@ -1,6 +1,6 @@
-# attenuation_dev
+# rainattenuation_dev
 
-C++ dvelopment of a simulator for mmWave rain attenuation. The code will be afterwards implemented as an extension module of the ns-3 simulator.
+C++ development of a simulator for mmWave rain attenuation. The code will be afterwards implemented as an extension module of the ns-3 simulator.
 
 Classes:
   1) Control: contains essential information for the Model, like location coordinates, frequency etc.
