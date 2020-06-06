@@ -9,4 +9,6 @@ Classes:
   
 Progress: 100% 
 
-g++ -g -std=c++11 -w test_main.cpp RainAttenuation.cpp RainGenerator.cpp control.cpp -o test_main
+Run: g++ -g -std=c++11 -w test_main.cpp RainAttenuation.cpp RainGenerator.cpp control.cpp -o test_main
+
+The code contained here is supplementary to the Master's Thesis "Impact of Rainfall on mmWave Radio Link" by Stavros Sykiotis, TU Berlin.
